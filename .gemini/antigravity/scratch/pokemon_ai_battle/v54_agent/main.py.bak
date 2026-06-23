@@ -426,12 +426,33 @@ def select_main_action(obs: Observation) -> list[int]:
 
     # 3. ATTACHES
     if attaches:
-        active_energy_need = 1 if active_id == MEGA_GARDEVOIR_EX else 3
+        # Energy attached to KO'd Pokémon is discarded — never over-invest in
+        # Ralts/Kirlia (70/90 HP).  Gardevoir on bench must be powered up
+        # first since Eternal Aurora counts ALL energies in play.
+        if active_id == MEGA_GARDEVOIR_EX:
+            active_energy_need = 1        # Already a good attacker with 1+
+        elif active_id in (SCREAM_TAIL_EX, LATIAS_EX):
+            active_energy_need = 2        # Real attackers / tanks
+        else:
+            active_energy_need = 1        # Ralts, Kirlia: minimal before spread
+
         active_has_energy = get_energies(active_poke)
         active_needs_more = active_has_energy < active_energy_need
 
-        if active_needs_more:
-            # Prefer Telepath to active (moves bench energy too)
+        # Check if a bench Gardevoir exists and could benefit from energy
+        bench_gardevoir_idxs = [
+            getattr(options[i], 'index', -1)
+            for i in attaches
+            if (getattr(options[i], 'inPlayArea', None) == AreaType.BENCH)
+        ]
+        has_bench_gardevoir = any(
+            (my_state.bench and 0 <= bi < len(my_state.bench)
+             and getattr(my_state.bench[bi], 'id', -1) == MEGA_GARDEVOIR_EX)
+            for bi in bench_gardevoir_idxs
+        )
+
+        if active_needs_more and not has_bench_gardevoir:
+            # Attach to active — no bench Gardevoir waiting for power
             for idx in attaches:
                 opt = options[idx]
                 if (get_option_card_id(opt, obs) == TELEPATH_PSYCHIC_ENERGY
@@ -441,7 +462,15 @@ def select_main_action(obs: Observation) -> list[int]:
                 if getattr(options[idx], 'inPlayArea', None) == AreaType.ACTIVE:
                     return [idx]
         else:
-            # Spread energy to bench for increased damage
+            # Prioritise bench Gardevoir for faster power-up
+            for idx in attaches:
+                opt = options[idx]
+                bi = getattr(opt, 'index', -1)
+                if (getattr(opt, 'inPlayArea', None) == AreaType.BENCH
+                        and my_state.bench and 0 <= bi < len(my_state.bench)
+                        and getattr(my_state.bench[bi], 'id', -1) == MEGA_GARDEVOIR_EX):
+                    return [idx]
+            # Then Telepath to bench (moves bench energy to active later)
             for idx in attaches:
                 opt = options[idx]
                 if (get_option_card_id(opt, obs) == TELEPATH_PSYCHIC_ENERGY
@@ -449,6 +478,10 @@ def select_main_action(obs: Observation) -> list[int]:
                     return [idx]
             for idx in attaches:
                 if getattr(options[idx], 'inPlayArea', None) == AreaType.BENCH:
+                    return [idx]
+            # Fallback: attach to active
+            for idx in attaches:
+                if getattr(options[idx], 'inPlayArea', None) == AreaType.ACTIVE:
                     return [idx]
 
         return [attaches[0]]
