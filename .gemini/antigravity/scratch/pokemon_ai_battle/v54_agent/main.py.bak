@@ -377,10 +377,15 @@ def select_main_action(obs: Observation) -> list[int]:
 
         # Draw card timing
         if opp_deck == "SNORLAX":
-            # Against Snorlax stall: minimize deck consumption
-            for draw_card in (LILLIES_DETERMINATION, LACEY, JUDGE):
+            # Snorlax forces deck-out; Lillie's Determination (shuffles discard
+            # back into deck) is the key counter.  Only drop LACEY/JUDGE to
+            # avoid over-drawing — keep Lillie as top priority.
+            for draw_card in (LACEY, JUDGE):
                 if draw_card in priority:
                     priority.remove(draw_card)
+            if LILLIES_DETERMINATION in priority:
+                priority.remove(LILLIES_DETERMINATION)
+            priority.insert(0 if my_state.deckCount < 25 else 2, LILLIES_DETERMINATION)
         elif my_state.deckCount > 5:
             priority.insert(2, LILLIES_DETERMINATION)
             priority.insert(3, LACEY)
