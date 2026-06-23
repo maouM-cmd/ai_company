@@ -386,6 +386,13 @@ def select_main_action(obs: Observation) -> list[int]:
             if LILLIES_DETERMINATION in priority:
                 priority.remove(LILLIES_DETERMINATION)
             priority.insert(0 if my_state.deckCount < 25 else 2, LILLIES_DETERMINATION)
+        elif opp_deck == "ALAKAZAM":
+            # Vs Alakazam: Judge reshuffles both hands — risks disrupting our own
+            # Ralts→Kirlia→Gardevoir evolution chain which is timing-critical.
+            # Use Lillie/Lacey for card advantage instead.
+            if my_state.deckCount > 5:
+                priority.insert(2, LILLIES_DETERMINATION)
+                priority.insert(3, LACEY)
         elif my_state.deckCount > 5:
             priority.insert(2, LILLIES_DETERMINATION)
             priority.insert(3, LACEY)
