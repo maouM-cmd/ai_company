@@ -1,0 +1,765 @@
+============================================================
+=== v67 (フロストラスex水) vs meta (N=20 each) ===
+============================================================
+  フーディン       : 11/20 =  55.0%  損:9  [OTHER:8 BENCH_OUT:1]
+  ルカリオ        : 11/20 =  55.0%  損:9  [OTHER:9]
+  イワパレス       : 15/20 =  75.0%  損:5  [BENCH_OUT:2 OTHER:3]
+  ユキノオー       :  6/20 =  30.0%  損:14  [OTHER:10 BENCH_OUT:4]
+  ハラバリーex     : 18/20 =  90.0%  損:2  [OTHER:2]
+  カビゴン        : 11/20 =  55.0%  損:9  [OTHER:9]
+
+  v67 総合: 72/120 = 60.0%
+
+============================================================
+=== V65 比較 ===
+============================================================
+  対面          V65勝率  v67勝率  差分
+
+============================================================
+=== v67 負け試合 詳細ログ ===
+============================================================
+
+[フーディン] seed=1 敗因=DECK_OUT (turn=32)
+  自: AlakazamEx(ene=1,dmg=0)  bench=4[AlakazamEx(e=0),#66(e=0),#66(e=0),#305(e=0)]
+  自: deck=0 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 32 自:AlakazamEx(ene=1,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 32 自:AlakazamEx(ene=1,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 32 自:AlakazamEx(ene=1,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 32 自:AlakazamEx(ene=1,dmg=0) bench=4 vs 相手:MegaStarmieEx(dmg=0)
+    t= 32 自:AlakazamEx(ene=1,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+    t= 32 自:AlakazamEx(ene=1,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=3 敗因=OTHER(t=6,bench=5) (turn=6)
+  自: AlakazamEx(ene=2,dmg=0)  bench=5[AlakazamEx(e=1),Abra(e=0),#305(e=0),#305(e=0),Omastar(e=0)]
+  自: deck=21 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:AlakazamEx(ene=1,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  6 自:AlakazamEx(ene=1,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  6 自:AlakazamEx(ene=1,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  6 自:AlakazamEx(ene=2,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  6 自:AlakazamEx(ene=2,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t=  6 自:AlakazamEx(ene=2,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=5 敗因=OTHER(t=10,bench=5) (turn=10)
+  自: AlakazamEx(ene=3,dmg=0)  bench=5[AlakazamEx(e=0),AlakazamEx(e=0),Omastar(e=0),Kadabra(e=0),#66(e=0)]
+  自: deck=15 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  9 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:AlakazamEx(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=7 敗因=OTHER(t=10,bench=5) (turn=10)
+  自: Omastar(ene=3,dmg=0)  bench=5[AlakazamEx(e=1),AlakazamEx(e=0),#66(e=0),#66(e=0),#305(e=0)]
+  自: deck=17 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 10 自:Omastar(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:Omastar(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:Omastar(ene=3,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:Omastar(ene=3,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:Omastar(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 10 自:Omastar(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=8 敗因=OTHER(t=10,bench=5) (turn=10)
+  自: AlakazamEx(ene=4,dmg=0)  bench=5[AlakazamEx(e=0),#66(e=0),AlakazamEx(e=0),Abra(e=0),Omastar(e=0)]
+  自: deck=12 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 10 自:#-1(ene=0,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=10 敗因=OTHER(t=8,bench=5) (turn=8)
+  自: AlakazamEx(ene=2,dmg=0)  bench=5[AlakazamEx(e=1),Kadabra(e=0),Kadabra(e=0),#66(e=0),#305(e=0)]
+  自: deck=16 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  7 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:AlakazamEx(dmg=0)
+    t=  8 自:AlakazamEx(ene=1,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  8 自:AlakazamEx(ene=2,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  8 自:AlakazamEx(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t=  8 自:AlakazamEx(ene=2,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t=  8 自:AlakazamEx(ene=2,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=11 敗因=OTHER(t=10,bench=5) (turn=10)
+  自: AlakazamEx(ene=4,dmg=0)  bench=5[Kadabra(e=0),Kadabra(e=0),Abra(e=0),#305(e=0),#305(e=0)]
+  自: deck=28 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 10 自:AlakazamEx(ene=3,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 10 自:AlakazamEx(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=14 敗因=OTHER(t=10,bench=2) (turn=10)
+  自: AlakazamEx(ene=2,dmg=0)  bench=2[#305(e=0),#305(e=0)]
+  自: deck=13 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  9 自:MegaStarmieEx(ene=5,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  9 自:#-1(ene=0,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 10 自:AlakazamEx(ene=1,dmg=0) bench=2 vs 相手:MegaStarmieEx(dmg=0)
+    t= 10 自:AlakazamEx(ene=2,dmg=0) bench=2 vs 相手:MegaStarmieEx(dmg=0)
+    t= 10 自:AlakazamEx(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t= 10 自:AlakazamEx(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[フーディン] seed=18 敗因=OTHER(t=8,bench=5) (turn=8)
+  自: AlakazamEx(ene=1,dmg=0)  bench=5[AlakazamEx(e=0),Abra(e=0),Abra(e=0),#66(e=0),Omastar(e=0)]
+  自: deck=26 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  8 自:#66(ene=1,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  8 自:#-1(ene=0,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  8 自:AlakazamEx(ene=1,dmg=0) bench=4 vs 相手:Staryu(dmg=0)
+    t=  8 自:AlakazamEx(ene=1,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t=  8 自:AlakazamEx(ene=1,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t=  8 自:AlakazamEx(ene=1,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=0 敗因=OTHER(t=16,bench=5) (turn=16)
+  自: Lucario675(ene=4,dmg=0)  bench=5[Riolu(e=3),Riolu(e=0),Riolu(e=0),Lucario(e=0),#676(e=0)]
+  自: deck=29 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 15 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:Lucario675(dmg=0)
+    t= 15 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Lucario675(dmg=0)
+    t= 16 自:Lucario675(ene=3,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 16 自:Lucario675(ene=4,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 16 自:Lucario675(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 16 自:Lucario675(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=1 敗因=OTHER(t=6,bench=3) (turn=6)
+  自: LucarioEx(ene=1,dmg=0)  bench=3[Lucario(e=2),#676(e=0),Riolu(e=0)]
+  自: deck=41 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:LucarioEx(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  6 自:LucarioEx(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  6 自:LucarioEx(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  6 自:LucarioEx(ene=1,dmg=0) bench=3 vs 相手:Snorunt(dmg=0)
+    t=  6 自:LucarioEx(ene=1,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+    t=  6 自:LucarioEx(ene=1,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=3 敗因=BENCH_OUT (turn=6)
+  自: Lucario675(ene=3,dmg=0)  bench=0[]
+  自: deck=43 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  5 自:Snorunt(ene=1,dmg=0) bench=0 vs 相手:Lucario675(dmg=0)
+    t=  5 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:Lucario675(dmg=0)
+    t=  6 自:Lucario675(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=4 敗因=OTHER(t=6,bench=2) (turn=6)
+  自: LucarioEx(ene=3,dmg=0)  bench=2[Lucario675(e=0),#676(e=0)]
+  自: deck=41 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  5 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:LucarioEx(dmg=0)
+    t=  6 自:LucarioEx(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  6 自:LucarioEx(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  6 自:LucarioEx(ene=3,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  6 自:LucarioEx(ene=3,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t=  6 自:LucarioEx(ene=3,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=5 敗因=OTHER(t=6,bench=5) (turn=6)
+  自: Lucario675(ene=3,dmg=0)  bench=5[Riolu(e=0),#676(e=0),Lucario(e=0),Lucario675(e=0),Riolu(e=0)]
+  自: deck=35 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:Lucario675(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t=  5 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:Lucario675(dmg=0)
+    t=  6 自:Lucario675(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=6 敗因=OTHER(t=12,bench=5) (turn=12)
+  自: Lucario(ene=3,dmg=0)  bench=5[Lucario675(e=3),Lucario(e=0),Riolu(e=0),Lucario(e=0),Riolu(e=0)]
+  自: deck=40 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 10 自:Lucario(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 11 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:Lucario(dmg=0)
+    t= 12 自:Lucario(ene=2,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Lucario(ene=3,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Lucario(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 12 自:Lucario(ene=3,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=9 敗因=BENCH_OUT (turn=4)
+  自: LucarioEx(ene=2,dmg=0)  bench=0[]
+  自: deck=44 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  3 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:Riolu(dmg=0)
+    t=  4 自:Riolu(ene=1,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  4 自:Riolu(ene=2,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  4 自:LucarioEx(ene=2,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  4 自:LucarioEx(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  4 自:LucarioEx(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=14 敗因=OTHER(t=4,bench=1) (turn=4)
+  自: LucarioEx(ene=1,dmg=0)  bench=1[Lucario675(e=1)]
+  自: deck=45 prizes_left=6
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  3 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Riolu(dmg=0)
+    t=  3 自:Staryu(ene=2,dmg=0) bench=0 vs 相手:Riolu(dmg=0)
+    t=  4 自:Riolu(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Riolu(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:LucarioEx(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:LucarioEx(ene=1,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=15 敗因=OTHER(t=20,bench=2) (turn=20)
+  自: LucarioEx(ene=2,dmg=0)  bench=2[Lucario(e=0),#676(e=0)]
+  自: deck=32 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 19 自:Staryu(ene=2,dmg=0) bench=0 vs 相手:Riolu(dmg=0)
+    t= 19 自:Staryu(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t= 19 自:#-1(ene=0,dmg=0) bench=3 vs 相手:Staryu(dmg=0)
+    t= 20 自:LucarioEx(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t= 20 自:LucarioEx(ene=2,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t= 20 自:LucarioEx(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=16 敗因=OTHER(t=6,bench=1) (turn=6)
+  自: Lucario675(ene=3,dmg=0)  bench=1[Lucario(e=0)]
+  自: deck=44 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:Lucario675(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  5 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Lucario675(dmg=0)
+    t=  6 自:Lucario675(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  6 自:Lucario675(ene=3,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ルカリオ] seed=19 敗因=OTHER(t=2,bench=3) (turn=2)
+  自: #676(ene=1,dmg=0)  bench=3[Lucario(e=0),Lucario675(e=0),Lucario(e=0)]
+  自: deck=43 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  2 自:#676(ene=1,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=3 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=0 敗因=OTHER(t=18,bench=1) (turn=18)
+  自: Crustle532(ene=2,dmg=0)  bench=1[Crustle532(e=3)]
+  自: deck=37 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 15 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t= 16 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 17 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t= 18 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 18 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t= 18 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=3 敗因=OTHER(t=12,bench=1) (turn=12)
+  自: Crustle(ene=3,dmg=0)  bench=1[Crustle532(e=0)]
+  自: deck=39 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 11 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t= 12 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 12 自:Crustle532(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 12 自:Crustle(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 12 自:Crustle(ene=3,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t= 12 自:Crustle(ene=3,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=4 敗因=BENCH_OUT (turn=8)
+  自: Crustle(ene=4,dmg=0)  bench=0[]
+  自: deck=42 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:#-1(ene=0,dmg=0) bench=1 vs 相手:Crustle(dmg=0)
+    t=  7 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:Crustle(dmg=0)
+    t=  8 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle(ene=4,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle(ene=4,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  8 自:Crustle(ene=4,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=6 敗因=BENCH_OUT (turn=12)
+  自: Crustle(ene=5,dmg=0)  bench=0[]
+  自: deck=41 prizes_left=2
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 11 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:Crustle(dmg=0)
+    t= 11 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Crustle(dmg=0)
+    t= 12 自:Crustle(ene=4,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t= 12 自:Crustle(ene=5,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t= 12 自:Crustle(ene=5,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t= 12 自:Crustle(ene=5,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=9 敗因=BENCH_OUT (turn=8)
+  自: Crustle532(ene=4,dmg=0)  bench=0[]
+  自: deck=44 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:Crustle532(ene=3,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  7 自:Staryu(ene=2,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  8 自:Crustle532(ene=3,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle532(ene=4,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle532(ene=4,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  8 自:Crustle532(ene=4,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=10 敗因=BENCH_OUT (turn=6)
+  自: Crustle(ene=3,dmg=0)  bench=0[]
+  自: deck=44 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  5 自:Snorunt(ene=0,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  6 自:Crustle532(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Crustle532(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=12 敗因=OTHER(t=8,bench=1) (turn=8)
+  自: Crustle532(ene=2,dmg=0)  bench=1[Crustle(e=2)]
+  自: deck=42 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  7 自:Staryu(ene=3,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  7 自:Staryu(ene=4,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  8 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  8 自:Crustle532(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=15 敗因=BENCH_OUT (turn=6)
+  自: Crustle(ene=3,dmg=0)  bench=0[]
+  自: deck=42 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  5 自:Snorunt(ene=0,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  6 自:Crustle532(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Crustle532(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=16 敗因=OTHER(t=8,bench=1) (turn=8)
+  自: Crustle532(ene=1,dmg=0)  bench=1[Crustle532(e=3)]
+  自: deck=43 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:Crustle532(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  7 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  8 自:Crustle532(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle532(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  8 自:Crustle532(ene=1,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  8 自:Crustle532(ene=1,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[イワパレス] seed=17 敗因=OTHER(t=6,bench=2) (turn=6)
+  自: Crustle(ene=3,dmg=0)  bench=2[Crustle532(e=0),Crustle532(e=0)]
+  自: deck=43 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  5 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:Crustle532(dmg=0)
+    t=  6 自:Crustle532(ene=2,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  6 自:Crustle532(ene=3,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t=  6 自:Crustle(ene=3,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=0 敗因=OTHER(t=12,bench=1) (turn=12)
+  自: Abomasnow(ene=4,dmg=0)  bench=1[Abomasnow(e=1)]
+  自: deck=27 prizes_left=2
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 11 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Abomasnow(dmg=0)
+    t= 12 自:Abomasnow(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 12 自:Abomasnow(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 12 自:Abomasnow(ene=4,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t= 12 自:Abomasnow(ene=4,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t= 12 自:Abomasnow(ene=4,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=1 敗因=BENCH_OUT (turn=12)
+  自: Abomasnow(ene=2,dmg=0)  bench=0[]
+  自: deck=26 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 10 自:Abomasnow(ene=1,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t= 11 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:Abomasnow(dmg=0)
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=2 敗因=OTHER(t=6,bench=1) (turn=6)
+  自: Abomasnow(ene=2,dmg=0)  bench=1[Abomasnow(e=0)]
+  自: deck=34 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:Abomasnow(ene=1,dmg=0) bench=1 vs 相手:MegaStarmieEx(dmg=0)
+    t=  6 自:Abomasnow(ene=1,dmg=0) bench=1 vs 相手:MegaStarmieEx(dmg=0)
+    t=  6 自:Abomasnow(ene=1,dmg=0) bench=1 vs 相手:MegaStarmieEx(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:MegaStarmieEx(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=3 敗因=OTHER(t=8,bench=3) (turn=8)
+  自: Abomasnow(ene=2,dmg=0)  bench=3[Abomasnow(e=0),Abomasnow(e=0),Snover(e=0)]
+  自: deck=20 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  8 自:Abomasnow(ene=1,dmg=0) bench=3 vs 相手:Snorunt(dmg=0)
+    t=  8 自:Abomasnow(ene=1,dmg=0) bench=3 vs 相手:Snorunt(dmg=0)
+    t=  8 自:Abomasnow(ene=1,dmg=0) bench=3 vs 相手:Snorunt(dmg=0)
+    t=  8 自:Abomasnow(ene=2,dmg=0) bench=3 vs 相手:Snorunt(dmg=0)
+    t=  8 自:Abomasnow(ene=2,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+    t=  8 自:Abomasnow(ene=2,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=5 敗因=OTHER(t=12,bench=2) (turn=12)
+  自: Abomasnow(ene=2,dmg=0)  bench=2[Snover(e=0),Snover(e=0)]
+  自: deck=31 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=6 敗因=OTHER(t=6,bench=1) (turn=6)
+  自: Abomasnow(ene=2,dmg=0)  bench=1[Snover(e=0)]
+  自: deck=30 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:Snover(ene=0,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Snover(ene=0,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=1,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=7 敗因=OTHER(t=4,bench=1) (turn=4)
+  自: Abomasnow(ene=2,dmg=0)  bench=1[Snover(e=0)]
+  自: deck=27 prizes_left=6
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:Snover(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Snover(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Snover(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=8 敗因=OTHER(t=4,bench=2) (turn=4)
+  自: Abomasnow(ene=2,dmg=0)  bench=2[Snover(e=0),Snover(e=0)]
+  自: deck=32 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=0 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=9 敗因=OTHER(t=12,bench=2) (turn=12)
+  自: Abomasnow(ene=2,dmg=0)  bench=2[Abomasnow(e=0),Abomasnow(e=0)]
+  自: deck=27 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=12 敗因=BENCH_OUT (turn=6)
+  自: Abomasnow(ene=2,dmg=0)  bench=0[]
+  自: deck=35 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  5 自:Snorunt(ene=1,dmg=0) bench=0 vs 相手:Abomasnow(dmg=0)
+    t=  6 自:Abomasnow(ene=1,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=14 敗因=OTHER(t=12,bench=2) (turn=12)
+  自: Abomasnow(ene=2,dmg=0)  bench=2[Abomasnow(e=3),Snover(e=0)]
+  自: deck=20 prizes_left=2
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 10 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 11 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:Abomasnow(dmg=0)
+    t= 12 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t= 12 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=15 敗因=OTHER(t=4,bench=1) (turn=4)
+  自: Abomasnow(ene=3,dmg=0)  bench=1[Snover(e=0)]
+  自: deck=43 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  3 自:Staryu(ene=2,dmg=0) bench=0 vs 相手:Snover(dmg=0)
+    t=  4 自:Snover(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=3,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  4 自:Abomasnow(ene=3,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=16 敗因=BENCH_OUT (turn=6)
+  自: Abomasnow(ene=3,dmg=0)  bench=0[]
+  自: deck=28 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:Abomasnow(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  6 自:Abomasnow(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=18 敗因=OTHER(t=4,bench=2) (turn=4)
+  自: Abomasnow(ene=2,dmg=0)  bench=2[Abomasnow(e=0),Snover(e=0)]
+  自: deck=36 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:Snover(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t=  4 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ユキノオー] seed=19 敗因=OTHER(t=14,bench=2) (turn=14)
+  自: Abomasnow(ene=3,dmg=0)  bench=2[Abomasnow(e=0),Abomasnow(e=0)]
+  自: deck=18 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 14 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Abomasnow(ene=2,dmg=0) bench=2 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Abomasnow(ene=3,dmg=0) bench=2 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Abomasnow(ene=3,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t= 14 自:Abomasnow(ene=3,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=0 敗因=OTHER(t=8,bench=2) (turn=8)
+  自: #271(ene=4,dmg=0)  bench=2[#270(e=0),#268(e=0)]
+  自: deck=36 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  7 自:Snorunt(ene=2,dmg=0) bench=0 vs 相手:#271(dmg=0)
+    t=  7 自:Snorunt(ene=3,dmg=0) bench=0 vs 相手:#271(dmg=0)
+    t=  8 自:#271(ene=3,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=3,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=4,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=3 敗因=OTHER(t=12,bench=2) (turn=12)
+  自: #269(ene=4,dmg=0)  bench=2[#270(e=0),#270(e=0)]
+  自: deck=32 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 12 自:#270(ene=0,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t= 12 自:#270(ene=0,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t= 12 自:#269(ene=3,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t= 12 自:#269(ene=4,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t= 12 自:#269(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t= 12 自:#269(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=4 敗因=OTHER(t=20,bench=3) (turn=20)
+  自: #269(ene=6,dmg=0)  bench=3[#271(e=0),#270(e=0),#270(e=0)]
+  自: deck=20 prizes_left=0
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 20 自:#271(ene=1,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 20 自:#271(ene=1,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 20 自:#271(ene=0,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 20 自:#269(ene=6,dmg=0) bench=3 vs 相手:MegaStarmieEx(dmg=0)
+    t= 20 自:#269(ene=6,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+    t= 20 自:#269(ene=6,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=9 敗因=OTHER(t=4,bench=3) (turn=4)
+  自: #270(ene=2,dmg=0)  bench=3[#269(e=0),#268(e=0),#268(e=0)]
+  自: deck=44 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:#270(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:#270(ene=1,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  4 自:#270(ene=1,dmg=0) bench=3 vs 相手:Staryu(dmg=0)
+    t=  4 自:#270(ene=2,dmg=0) bench=3 vs 相手:Staryu(dmg=0)
+    t=  4 自:#270(ene=2,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+    t=  4 自:#270(ene=2,dmg=0) bench=3 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=12 敗因=OTHER(t=6,bench=4) (turn=6)
+  自: #270(ene=4,dmg=0)  bench=4[#270(e=0),#268(e=0),#268(e=0),#268(e=0)]
+  自: deck=37 prizes_left=6
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:#270(ene=2,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#270(ene=2,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#270(ene=2,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#270(ene=3,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#270(ene=4,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#270(ene=4,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=13 敗因=BENCH_OUT (turn=6)
+  自: #271(ene=3,dmg=0)  bench=0[]
+  自: deck=32 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:#271(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  5 自:Snorunt(ene=1,dmg=0) bench=0 vs 相手:#271(dmg=0)
+    t=  6 自:#271(ene=2,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#271(ene=3,dmg=0) bench=0 vs 相手:Snorunt(dmg=0)
+    t=  6 自:#271(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+    t=  6 自:#271(ene=3,dmg=0) bench=0 vs 相手:#-1(dmg=0)
+
+[ハラバリーex] seed=18 敗因=OTHER(t=8,bench=2) (turn=8)
+  自: #271(ene=4,dmg=0)  bench=2[#271(e=0),#270(e=0)]
+  自: deck=32 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  8 自:#271(ene=3,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=3,dmg=0) bench=1 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=3,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=4,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  8 自:#271(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t=  8 自:#271(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=0 敗因=OTHER(t=6,bench=2) (turn=6)
+  自: Snorlax(ene=4,dmg=0)  bench=2[Lucario675(e=0),#676(e=0)]
+  自: deck=40 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  6 自:Snorlax(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  6 自:Snorlax(ene=3,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  6 自:Snorlax(ene=3,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  6 自:Snorlax(ene=4,dmg=0) bench=2 vs 相手:Staryu(dmg=0)
+    t=  6 自:Snorlax(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+    t=  6 自:Snorlax(ene=4,dmg=0) bench=2 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=4 敗因=OTHER(t=14,bench=4) (turn=14)
+  自: Snorlax(ene=5,dmg=0)  bench=4[Lucario675(e=0),Snorlax(e=0),Snorlax(e=0),Snorlax(e=0)]
+  自: deck=28 prizes_left=2
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 14 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:MegaStarmieEx(dmg=0)
+    t= 14 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:MegaStarmieEx(dmg=0)
+    t= 14 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:MegaStarmieEx(dmg=0)
+    t= 14 自:Snorlax(ene=5,dmg=0) bench=4 vs 相手:MegaStarmieEx(dmg=0)
+    t= 14 自:Snorlax(ene=5,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+    t= 14 自:Snorlax(ene=5,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=6 敗因=OTHER(t=2,bench=4) (turn=2)
+  自: #676(ene=1,dmg=0)  bench=4[Snorlax(e=0),Snorlax(e=0),Lucario675(e=0),#676(e=0)]
+  自: deck=41 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  2 自:#676(ene=0,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  2 自:#676(ene=0,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  2 自:#676(ene=0,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=7 敗因=OTHER(t=4,bench=4) (turn=4)
+  自: #676(ene=1,dmg=0)  bench=4[Snorlax(e=0),Lucario675(e=0),Lucario675(e=0),Snorlax(e=0)]
+  自: deck=39 prizes_left=4
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  4 自:#676(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  4 自:#676(ene=1,dmg=0) bench=2 vs 相手:Snorunt(dmg=0)
+    t=  4 自:#676(ene=1,dmg=0) bench=3 vs 相手:Snorunt(dmg=0)
+    t=  4 自:#676(ene=1,dmg=0) bench=4 vs 相手:Snorunt(dmg=0)
+    t=  4 自:#676(ene=1,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+    t=  4 自:#676(ene=1,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=10 敗因=OTHER(t=2,bench=1) (turn=2)
+  自: #676(ene=1,dmg=0)  bench=1[Lucario675(e=0)]
+  自: deck=39 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  2 自:Lucario675(ene=0,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  2 自:Lucario675(ene=0,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=0,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=1 vs 相手:Staryu(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+    t=  2 自:#676(ene=1,dmg=0) bench=1 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=11 敗因=OTHER(t=8,bench=4) (turn=8)
+  自: Snorlax(ene=4,dmg=0)  bench=4[Lucario675(e=0),#676(e=0),Snorlax(e=0),Snorlax(e=0)]
+  自: deck=41 prizes_left=6
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t=  7 自:Staryu(ene=1,dmg=0) bench=0 vs 相手:Snorlax(dmg=0)
+    t=  7 自:Staryu(ene=2,dmg=0) bench=0 vs 相手:Snorlax(dmg=0)
+    t=  8 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:Staryu(dmg=0)
+    t=  8 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:Staryu(dmg=0)
+    t=  8 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:Staryu(dmg=0)
+    t=  8 自:Snorlax(ene=4,dmg=0) bench=4 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=13 敗因=OTHER(t=12,bench=5) (turn=12)
+  自: Snorlax(ene=5,dmg=0)  bench=5[Lucario675(e=0),#676(e=0),Snorlax(e=0),Snorlax(e=0),#676(e=0)]
+  自: deck=17 prizes_left=5
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 11 自:Snorunt(ene=3,dmg=0) bench=0 vs 相手:Snorlax(dmg=0)
+    t= 11 自:Snorunt(ene=4,dmg=0) bench=0 vs 相手:Snorlax(dmg=0)
+    t= 12 自:Snorlax(ene=4,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Snorlax(ene=5,dmg=0) bench=5 vs 相手:Snorunt(dmg=0)
+    t= 12 自:Snorlax(ene=5,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 12 自:Snorlax(ene=5,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=15 敗因=OTHER(t=12,bench=5) (turn=12)
+  自: Snorlax(ene=4,dmg=0)  bench=5[Snorlax(e=0),Lucario675(e=0),Lucario675(e=0),Snorlax(e=0),#676(e=0)]
+  自: deck=21 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 12 自:Snorlax(ene=0,dmg=0) bench=4 vs 相手:MegaFroslassEx(dmg=0)
+    t= 12 自:Snorlax(ene=0,dmg=0) bench=5 vs 相手:MegaFroslassEx(dmg=0)
+    t= 12 自:Snorlax(ene=0,dmg=0) bench=5 vs 相手:MegaFroslassEx(dmg=0)
+    t= 12 自:Snorlax(ene=4,dmg=0) bench=5 vs 相手:MegaFroslassEx(dmg=0)
+    t= 12 自:Snorlax(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 12 自:Snorlax(ene=4,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=16 敗因=OTHER(t=14,bench=5) (turn=14)
+  自: Snorlax(ene=5,dmg=0)  bench=5[#676(e=2),Snorlax(e=0),Lucario675(e=0),Snorlax(e=0),Lucario675(e=0)]
+  自: deck=24 prizes_left=3
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 12 自:Snorlax(ene=3,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 13 自:Staryu(ene=0,dmg=0) bench=0 vs 相手:Snorlax(dmg=0)
+    t= 14 自:Snorlax(ene=4,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 14 自:Snorlax(ene=5,dmg=0) bench=5 vs 相手:Staryu(dmg=0)
+    t= 14 自:Snorlax(ene=5,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 14 自:Snorlax(ene=5,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
+[カビゴン] seed=18 敗因=OTHER(t=14,bench=5) (turn=14)
+  自: Snorlax(ene=7,dmg=0)  bench=5[#676(e=0),Lucario675(e=0),#676(e=0),Snorlax(e=0),Snorlax(e=0)]
+  自: deck=29 prizes_left=0
+  相手: #-1(dmg=0)
+  最後6ターン:
+    t= 13 自:MegaFroslassEx(ene=0,dmg=0) bench=0 vs 相手:Snorlax(dmg=0)
+    t= 14 自:Snorlax(ene=6,dmg=0) bench=5 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Snorlax(ene=6,dmg=0) bench=5 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Snorlax(ene=7,dmg=0) bench=5 vs 相手:MegaFroslassEx(dmg=0)
+    t= 14 自:Snorlax(ene=7,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+    t= 14 自:Snorlax(ene=7,dmg=0) bench=5 vs 相手:#-1(dmg=0)
+
