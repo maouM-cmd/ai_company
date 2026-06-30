@@ -318,8 +318,8 @@ class AutoPublisher:
                     raw_text += cta_line
 
         try:
-            from services.reddit_poster import RedditPoster
-            poster = RedditPoster()
+            from services.reddit_poster import get_poster
+            poster = get_poster()
             result = await poster.post_async(raw_text, subreddit=subreddit)
             if result["status"] == "posted":
                 self._log_event(f"✅ Reddit投稿完了: {result.get('url', '')}")
@@ -401,8 +401,8 @@ class AutoPublisher:
 
         # Redditにも英語要約を投稿
         try:
-            from services.reddit_poster import RedditPoster
-            reddit = RedditPoster()
+            from services.reddit_poster import get_poster
+            reddit = get_poster()
             result = await reddit.post_async(promo_text, subreddit="SideProject")
             if result["status"] == "posted":
                 self._log_event(f"✅ プロモ記事Reddit投稿完了: {result.get('url', '')}")

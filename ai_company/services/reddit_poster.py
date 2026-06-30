@@ -6,6 +6,9 @@ import asyncio
 import re
 from pathlib import Path
 
+_post_lock = asyncio.Lock()
+_poster_instance: "RedditPoster | None" = None
+
 REDDIT_DATA_DIR = str(Path(__file__).parent.parent / "reddit_playwright_data")
 
 SUBREDDIT_MAP = {
@@ -52,6 +55,13 @@ def is_logged_in() -> bool:
            (data_dir / "Default" / "Network" / "Cookies").exists()
 
 
+def get_poster() -> "RedditPoster":
+    global _poster_instance
+    if _poster_instance is None:
+        _poster_instance = RedditPoster()
+    return _poster_instance
+
+
 class RedditPoster:
     def __init__(self):
         self._ctx = None
@@ -61,7 +71,12 @@ class RedditPoster:
 
     async def _get_context(self):
         if self._ctx:
-            return self._ctx
+            try:
+                # コンテキストが生きているか確認
+                _ = self._ctx.pages
+                return self._ctx
+            except Exception:
+                self._ctx = None
         from playwright.async_api import async_playwright
         pw = await async_playwright().start()
         Path(REDDIT_DATA_DIR).mkdir(parents=True, exist_ok=True)
@@ -73,12 +88,16 @@ class RedditPoster:
         return self._ctx
 
     async def post_async(self, raw_text: str, topic_key: str = "default", subreddit: str = "") -> dict:
+        async with _post_lock:
+            return await self._post_async_impl(raw_text, topic_key, subreddit)
+
+    async def _post_async_impl(self, raw_text: str, topic_key: str = "default", subreddit: str = "") -> dict:
         parsed = _extract_reddit_post(raw_text, topic_key)
         target = subreddit or parsed["subreddits"][0]
         title = parsed["title"]
         body = parsed["body"]
 
-        print(f"[Reddit] 投稿開始: r/{target}")
+        print(f"[Reddit] 投稿開始: r/{target}", flush=True)
         ctx = await self._get_context()
         page = await ctx.new_page()
         try:
@@ -96,11 +115,11 @@ class RedditPoster:
                 print("[Reddit] 未ログイン検出 → reddit_auth.py を実行してください", flush=True)
                 return {"status": "error", "error": "未ログイン — python services/reddit_auth.py を実行してください"}
 
-            # デバッグ: ページHTMLの先頭確認
+            # ブロック検知
             page_text = await page.inner_text("body")
-            print(f"[Reddit] ページ内容（先頭200字）: {page_text[:200]}", flush=True)
-            has_title = await page.query_selector("textarea[name='title']")
-            print(f"[Reddit] タイトルtextarea存在: {bool(has_title)}", flush=True)
+            if "blocked by network security" in page_text or "whoa there" in page_text.lower():
+                print(f"[Reddit] ブロック検知: {page_text[:100]}", flush=True)
+                return {"status": "error", "error": "Redditにブロックされました（bot検出）"}
 
             # old.reddit のフォーム: title/text は textarea[name]
             await page.wait_for_selector("textarea[name='title']", timeout=20000)
@@ -113,16 +132,28 @@ class RedditPoster:
                 await text_area.fill(body[:40000])
             await page.wait_for_timeout(500)
 
-            # 投稿ボタン（.btn:has-text('SUBMIT') が確実）
-            await page.click("button.btn:has-text('SUBMIT'), button[type='submit']:not([id*='redesign']):not([class*='flair'])", timeout=10000)
-            await page.wait_for_timeout(3000)
+            # 投稿ボタン: old.reddit は button.btn[type='submit']
+            submit_btn = await page.query_selector("button.btn[type='submit']")
+            if not submit_btn:
+                submit_btn = await page.query_selector("input[type='submit'][value='submit']")
+            if submit_btn:
+                await submit_btn.scroll_into_view_if_needed()
+                await submit_btn.click()
+            else:
+                raise Exception("投稿ボタンが見つかりません")
+
+            # 投稿後: URLの変化 or 3秒待機
+            try:
+                await page.wait_for_url("**/comments/**", timeout=5000)
+            except Exception:
+                await page.wait_for_timeout(3000)
 
             post_url = page.url
-            print(f"[Reddit] 投稿完了: {post_url}")
+            print(f"[Reddit] 投稿完了: {post_url}", flush=True)
             return {"status": "posted", "url": post_url, "subreddit": target, "title": title}
 
         except Exception as e:
-            print(f"[Reddit] 投稿エラー: {e}")
+            print(f"[Reddit] 投稿エラー: {e}", flush=True)
             return {"status": "error", "error": str(e), "subreddits": parsed["subreddits"]}
         finally:
             await page.close()
