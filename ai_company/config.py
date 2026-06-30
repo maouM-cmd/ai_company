@@ -15,9 +15,9 @@ QIITA_TOKEN    = os.environ.get("QIITA_TOKEN",    "")
 
 # 全モデル無料枠対応（Google AI Studio 無料ティア）
 MODELS = {
-    "ceo":     "models/gemini-1.5-flash",  # 1500 RPD 無料枠（安定）
-    "manager": "models/gemini-1.5-flash",  # 1500 RPD 無料枠（安定）
-    "worker":  "models/gemini-1.5-flash",  # 1500 RPD 無料枠（安定）
+    "ceo":     "models/gemini-2.5-flash-lite",  # 2.5-flash-lite (無料枠確認済)
+    "manager": "models/gemini-2.5-flash-lite",
+    "worker":  "models/gemini-2.5-flash-lite",
 }
 
 # Gemini のmax_output_tokens
