@@ -12,13 +12,18 @@ _poster_instance: "RedditPoster | None" = None
 REDDIT_DATA_DIR = str(Path(__file__).parent.parent / "reddit_playwright_data")
 
 SUBREDDIT_MAP = {
-    "seo_pack":       ["Entrepreneur", "smallbusiness", "marketing"],
-    "ai_bundle":      ["Entrepreneur", "artificial", "SideProject"],
-    "pitch_deck":     ["startups", "Entrepreneur", "SideProject"],
-    "side_hustle":    ["passive_income", "SideProject", "Entrepreneur"],
-    "ai_productivity":["productivity", "Entrepreneur", "ChatGPT"],
-    "marketing":      ["marketing", "Entrepreneur", "smallbusiness"],
-    "default":        ["Entrepreneur", "SideProject"],
+    "seo_pack":            ["Entrepreneur", "smallbusiness", "marketing"],
+    "ai_bundle":           ["Entrepreneur", "artificial", "SideProject"],
+    "pitch_deck":          ["startups", "Entrepreneur", "SideProject"],
+    "side_hustle":         ["passive_income", "SideProject", "Entrepreneur"],
+    "ai_productivity":     ["productivity", "Entrepreneur", "ChatGPT"],
+    "marketing":           ["marketing", "Entrepreneur", "smallbusiness"],
+    "investing":           ["personalfinance", "financialindependence", "passive_income"],
+    "programming":         ["learnprogramming", "SideProject", "digitalnomad"],
+    "content_monetization":["juststart", "Entrepreneur", "SideProject"],
+    "digital_products":    ["passive_income", "Entrepreneur", "SideProject"],
+    "chatgpt_business":    ["ChatGPT", "artificial", "Entrepreneur"],
+    "default":             ["Entrepreneur", "SideProject"],
 }
 
 

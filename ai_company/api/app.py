@@ -887,6 +887,18 @@ NOTE_TEMPLATES = {
         "label": "プログラミング・IT副業",
         "theme": "プログラミングを学んでITフリーランスとして副収入を得るためのロードマップ",
     },
+    "content_monetization": {
+        "label": "コンテンツ収益化",
+        "theme": "note・ブログ・YouTube・Substackでコンテンツを収益化して月収10万円を目指す方法",
+    },
+    "digital_products": {
+        "label": "デジタル商品販売",
+        "theme": "電子書籍・テンプレート・プロンプト集・動画コースをGumroad等で販売して不労所得を作る方法",
+    },
+    "chatgpt_business": {
+        "label": "ChatGPT副業・ビジネス活用",
+        "theme": "ChatGPTを使ってビジネスを自動化・効率化し、副業収入を3倍にする実践テクニック",
+    },
 }
 
 class NoteRequest(BaseModel):

@@ -21,6 +21,9 @@ NOTE_TOPICS = [
     "marketing",
     "investing",
     "programming",
+    "content_monetization",
+    "digital_products",
+    "chatgpt_business",
 ]
 
 REDDIT_SUBREDDITS = [
@@ -156,6 +159,9 @@ class AutoPublisher:
             "marketing": "SNS集客・マーケティング",
             "investing": "資産運用・投資入門",
             "programming": "プログラミング・IT副業",
+            "content_monetization": "コンテンツ収益化",
+            "digital_products": "デジタル商品販売",
+            "chatgpt_business": "ChatGPT副業・ビジネス活用",
         }
         from api.app import NOTE_TEMPLATES
         from agents.research_agent import get_trending_context
