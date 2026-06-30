@@ -16,6 +16,7 @@ from agents.researcher import ResearcherAgent
 from agents.analyst import AnalystAgent
 from agents.sales import SalesAgent
 from agents.product_manager import ProductManagerAgent
+from agents.openclaw_operator import OpenClawAgent
 
 
 def create_company() -> tuple[Orchestrator, list]:
@@ -29,6 +30,7 @@ def create_company() -> tuple[Orchestrator, list]:
     analyst         = AnalystAgent()
     sales           = SalesAgent()
     product_manager = ProductManagerAgent()
+    openclaw_op     = OpenClawAgent()
 
     org.register(engineer)
     org.register(writer)
@@ -36,8 +38,9 @@ def create_company() -> tuple[Orchestrator, list]:
     org.register(analyst)
     org.register(sales)
     org.register(product_manager)
+    org.register(openclaw_op)
 
-    agent_list = [engineer, writer, researcher, analyst, sales, product_manager]
+    agent_list = [engineer, writer, researcher, analyst, sales, product_manager, openclaw_op]
     return org, agent_list
 
 
