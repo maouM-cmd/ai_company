@@ -187,7 +187,7 @@ class AutoPublisher:
         current_prompt = prompt
         for attempt in range(3):  # 最大3回（初回 + 再生成2回）
             try:
-                async with asyncio.timeout(480):
+                async with asyncio.timeout(720):  # 503リトライ最大360s+生成時間に対応
                     raw_text = await call_llm(
                         current_prompt,
                         system="あなたは日本語でnote.com向けの高品質な有料記事を書くプロのライターです。",
