@@ -82,6 +82,14 @@ def _service_score(name: str, status: dict, logs: list[dict]) -> tuple[int, str]
     if name == "Task Scheduler":
         return (100, "✅") if _schtasks_ok() else (0, "❌")
 
+    if name == "OpenClaw":
+        try:
+            import urllib.request
+            urllib.request.urlopen("http://127.0.0.1:18789/health", timeout=2)
+            return (100, "✅")
+        except Exception:
+            return (0, "❌")
+
     return (0, "❓")
 
 
@@ -106,7 +114,7 @@ def build_dashboard() -> Panel:
     svc_table.add_column("完成度", width=6, justify="right")
     svc_table.add_column("状態", width=4)
 
-    services = ["LLM", "Zenn", "Qiita", "note", "Gumroad", "Task Scheduler"]
+    services = ["LLM", "Zenn", "Qiita", "note", "Gumroad", "Task Scheduler", "OpenClaw"]
     scores = []
     for svc in services:
         pct, icon = _service_score(svc, auto, logs)
