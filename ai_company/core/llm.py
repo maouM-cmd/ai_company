@@ -115,15 +115,19 @@ async def call_llm(
         except Exception as e:
             err = str(e)
             is_quota = "429" in err or "RESOURCE_EXHAUSTED" in err
-            if is_quota and attempt < 2:
-                wait = 30 * (2 ** attempt)   # 30s → 60s
-                # クォータ詳細をログに出力（"quotaId"部分のみ）
-                quota_hint = ""
-                if "PerDay" in err:
-                    quota_hint = " [日次上限]"
-                elif "PerMinute" in err or "retryDelay" in err:
-                    quota_hint = " [分次上限]"
-                print(f"[LLM] Geminiレート制限{quota_hint} → {wait}秒後リトライ ({attempt+1}/2)")
+            is_overloaded = "503" in err or ("UNAVAILABLE" in err and "503" not in err)
+            # クォータ詳細をログに出力
+            hint = ""
+            if "PerDay" in err:
+                hint = " [日次上限]"
+            elif "PerMinute" in err or "retryDelay" in err:
+                hint = " [分次上限]"
+            elif is_overloaded:
+                hint = " [503高需要]"
+
+            if (is_quota or is_overloaded) and attempt < 2:
+                wait = 60 * (2 ** attempt)   # 60s → 120s（503にも対応）
+                print(f"[LLM] Gemini一時エラー{hint} → {wait}秒後リトライ ({attempt+1}/2)")
                 await asyncio.sleep(wait)
             elif is_quota:
                 _switch_to_ollama(minutes=3)
@@ -140,6 +144,13 @@ async def call_llm(
                             None, lambda: _gemini_sync(prompt, system, model, max_tok)
                         )
                     raise
+            elif is_overloaded:
+                # 503はOllama不要、3分待って最終リトライ
+                print("[LLM] Gemini 503高需要 → 3分後に最終リトライ")
+                await asyncio.sleep(180)
+                return await loop.run_in_executor(
+                    None, lambda: _gemini_sync(prompt, system, model, max_tok)
+                )
             else:
                 raise
 

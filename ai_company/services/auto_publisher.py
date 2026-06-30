@@ -529,7 +529,8 @@ class AutoPublisher:
         self._log_event(f"月次新商品生成完了: {self._task_results[task_id]['status']}")
 
     def _build_note_prompt(self, theme: str, price_yen: int, trend_context: str = "") -> str:
-        # Gumroad CTA（商品がある場合のみ）
+        # Gumroad CTA指示（商品がある場合のみ）— LLMが自然な流れで書く
+        cta_instruction = ""
         cta_block = ""
         if self._mem:
             products = self._mem.get_gumroad_products()
@@ -537,15 +538,16 @@ class AutoPublisher:
                 p = random.choice(products)
                 gumroad_url = f"https://springharu.gumroad.com/l/{p['short_url']}"
                 price_j = int(p["price_usd"]) * 160
-                cta_block = f"""
-## 🎁 コピペで使える実践テンプレートを手に入れる
-
-この記事の内容をすぐ実践に移したい方へ、すぐ使えるツールを用意しています。
-
-**→ [{p["name"]}]({gumroad_url})**
-✅ コピペで今日から使える　✅ ¥{price_j}（コーヒー1杯分）
-
----
+                # LLMへの指示として渡す（ハードコードではなく自然な紹介を書かせる）
+                cta_instruction = f"""
+【Gumroad商品の自然な紹介（必須）】
+「ここまでは基本です。ただ、ほとんどの人はここで止まります。」の直後に、
+以下の商品をこの記事テーマと関連づけて自然に紹介する1〜2段落を書くこと。
+- 商品名: {p["name"]}
+- URL: {gumroad_url}
+- 価格: ¥{price_j}（コーヒー1杯分）
+- 書き方: 記事のテーマ「{theme}」を実践するための具体的なツールとして紹介する
+- URLはMarkdownリンク形式で。押しつけがましくせず、「使ってみたら〜でした」という体験談口調で書く
 """
 
         trend_block = f"\n{trend_context}\n" if trend_context else ""
@@ -594,7 +596,7 @@ class AutoPublisher:
 （同じフォーマット）
 
 セクション末尾に：「ここまでは基本です。ただ、ほとんどの人はここで止まります。」と書く。
-{cta_block}
+{cta_instruction}
 ## 🔒 ここから有料（{price_yen}円）
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -626,6 +628,7 @@ A1：（具体的な回答）
 - **断定より語りかけ**：「〜できます」より「〜できるようになりました」「〜してみたら意外と〜でした」
 - 全文日本語、話しかけるような口語調（「〜ですよね」「〜じゃないですか」も使ってOK）
 - 具体的な数字・期間・金額を必ず入れる（「約2週間」「月3万円」「30分で」）
+- **タイトルと本文の数字・期間を必ず一致させる**：タイトルで「2週間」と書いたら本文の実践例も「2週間」で達成した事例を使う。矛盾は信頼性を壊す
 - 曖昧な表現禁止：「〜かもしれません」は使わない
 - 無料部分と有料部分を合わせて合計3,000字以上書く
 - ## タイトル: の直後から記事本文を始める（前置きや説明文は不要）"""

@@ -4,7 +4,7 @@ QAエージェント — note記事を投稿前に採点し、品質基準を満
 import re
 from core.llm import call_llm
 
-QA_PASS_SCORE = 7  # この点数以上なら投稿OK
+QA_PASS_SCORE = 6  # この点数以上なら投稿OK（503多発時の再生成を減らすため6に設定）
 
 
 async def score_article(raw_text: str) -> dict:
