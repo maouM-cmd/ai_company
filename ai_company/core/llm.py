@@ -45,15 +45,18 @@ def _reset_ollama_fallback():
 # ── Gemini 呼び出し ─────────────────────────────────────────
 
 def _gemini_sync(prompt: str, system: str, model: str, max_tokens: int) -> str:
+    # thinking_config は gemini-2.5-flash のみ対応。他モデルでは省略
+    config_kwargs: dict = {
+        "system_instruction": system,
+        "max_output_tokens": max_tokens,
+        "temperature": 0.35,
+    }
+    if "2.5" in model:
+        config_kwargs["thinking_config"] = types.ThinkingConfig(thinking_budget=5000)
     response = _get_gemini_client().models.generate_content(
         model=model,
         contents=prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=system,
-            max_output_tokens=max_tokens,
-            temperature=0.35,
-            thinking_config=types.ThinkingConfig(thinking_budget=5000),
-        ),
+        config=types.GenerateContentConfig(**config_kwargs),
     )
     return response.text
 
