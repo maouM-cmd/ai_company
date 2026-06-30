@@ -92,9 +92,10 @@ class QiitaPoster:
         if not QIITA_TOKEN:
             return {"status": "error", "error": "QIITA_TOKEN が未設定です。.env に追加してください。"}
 
+        from agents.seo_agent import get_qiita_tags
         title = _extract_title(raw_text)
         body  = _build_body(raw_text, products or [])
-        tags  = [{"name": t} for t in TOPIC_TAGS.get(topic, TOPIC_TAGS["default"])[:5]]
+        tags  = get_qiita_tags(raw_text, topic)
 
         payload = json.dumps({
             "title": title,
