@@ -244,23 +244,8 @@ class AutoPublisher:
         except Exception as e:
             self._log_event(f"Zenn投稿エラー: {e}")
 
-        # Qiita に同時投稿（週1回のみ：スパム判定対策）
-        try:
-            from services.qiita_poster import QiitaPoster, is_configured as qiita_ok
-            this_week = datetime.now().strftime("%Y-W%W")
-            if qiita_ok() and self._qiita_last_post_date != this_week:
-                products = self._mem.get_gumroad_products() if self._mem else []
-                qiita = QiitaPoster()
-                qr = await loop.run_in_executor(None, lambda: qiita.post(raw_text, products=products))
-                if qr["status"] == "published":
-                    self._qiita_last_post_date = this_week
-                    self._log_event(f"✅ Qiita投稿完了: {qr.get('url', '')}")
-                else:
-                    self._log_event(f"⚠️ Qiita投稿失敗: {qr.get('error', '')[:80]}")
-            elif self._qiita_last_post_date == this_week:
-                self._log_event("Qiita今週投稿済み → スキップ（週1回制限）")
-        except Exception as e:
-            self._log_event(f"Qiita投稿エラー: {e}")
+        # Qiita: 403エラーが続くため一時無効化（トークンにwrite_qiitaスコープ付与後に再有効化）
+        # 再有効化手順: https://qiita.com/settings/tokens/new でwrite_qiitaスコープのトークンを再生成し.envを更新
 
     def _load_latest_zenn_article(self) -> str:
         """最新のZenn記事ファイルを読み込む（_task_resultsが空の場合のフォールバック）"""
