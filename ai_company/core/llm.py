@@ -116,8 +116,14 @@ async def call_llm(
             err = str(e)
             is_quota = "429" in err or "RESOURCE_EXHAUSTED" in err
             if is_quota and attempt < 2:
-                wait = 30 * (2 ** attempt)   # 30s → 60s（元の10s/20sより長く待つ）
-                print(f"[LLM] Geminiレート制限 → {wait}秒後リトライ ({attempt+1}/2)")
+                wait = 30 * (2 ** attempt)   # 30s → 60s
+                # クォータ詳細をログに出力（"quotaId"部分のみ）
+                quota_hint = ""
+                if "PerDay" in err:
+                    quota_hint = " [日次上限]"
+                elif "PerMinute" in err or "retryDelay" in err:
+                    quota_hint = " [分次上限]"
+                print(f"[LLM] Geminiレート制限{quota_hint} → {wait}秒後リトライ ({attempt+1}/2)")
                 await asyncio.sleep(wait)
             elif is_quota:
                 _switch_to_ollama(minutes=3)
