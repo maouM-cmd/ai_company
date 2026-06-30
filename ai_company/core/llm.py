@@ -122,7 +122,19 @@ async def call_llm(
             elif is_overloaded:
                 hint = " [503高需要]"
 
-            if (is_quota or is_overloaded) and attempt < 2:
+            is_daily_limit = "PerDay" in err
+            if is_daily_limit:
+                # 日次上限は数時間リトライしても無意味 → Ollamaに直行して失敗なら諦める
+                print("[LLM] Gemini日次上限 → Ollamaフォールバック（失敗なら本日生成不可）")
+                _switch_to_ollama(minutes=3)
+                try:
+                    return await loop.run_in_executor(None, lambda: _ollama_sync(prompt, system))
+                except RuntimeError:
+                    raise RuntimeError(
+                        "Gemini日次クォータ枯渇・Ollama未起動。"
+                        "クォータはUTC深夜（JST09:00頃）にリセットされます。"
+                    )
+            elif (is_quota or is_overloaded) and attempt < 2:
                 wait = 60 * (2 ** attempt)   # 60s → 120s（503にも対応）
                 print(f"[LLM] Gemini一時エラー{hint} → {wait}秒後リトライ ({attempt+1}/2)")
                 await asyncio.sleep(wait)
