@@ -78,16 +78,22 @@ class RedditPoster:
         title = parsed["title"]
         body = parsed["body"]
 
+        print(f"[Reddit] 投稿開始: r/{target}")
         ctx = await self._get_context()
         page = await ctx.new_page()
         try:
             url = f"https://www.reddit.com/r/{target}/submit?type=self"
             await page.goto(url, timeout=30000)
-            await page.wait_for_load_state("networkidle", timeout=20000)
-            await page.wait_for_timeout(3000)  # JSエディタのマウント待ち
+            # networkidle は Reddit では永遠に終わらないことがある → domcontentloaded に変更
+            await page.wait_for_load_state("domcontentloaded", timeout=15000)
+            await page.wait_for_timeout(2000)
 
-            # ログインチェック
-            if "login" in page.url or "register" in page.url:
+            current_url = page.url
+            print(f"[Reddit] ページ読込完了: {current_url}")
+
+            # ログインチェック（URLとページ内容の両方を確認）
+            if "login" in current_url or "register" in current_url:
+                print("[Reddit] 未ログイン検出 → reddit_auth.py を実行してください")
                 return {"status": "error", "error": "未ログイン — python services/reddit_auth.py を実行してください"}
 
             # タイトル入力

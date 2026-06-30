@@ -65,7 +65,7 @@ class AutoPublisher:
         if not self._running:
             self._running = True
             self._task = asyncio.create_task(self._loop())
-            print("[AutoPublisher] 起動 - note(月水金09:00) Reddit(火木10:00) X(毎日07:00/19:00) プロモ(毎月1日) 新商品(毎月15日)")
+            print("[AutoPublisher] 起動 - note(毎日09:00) Reddit(火木10:00) X(毎日07:00/19:00) プロモ(毎月1日) 新商品(毎月15日)")
 
     def stop(self):
         self._running = False
