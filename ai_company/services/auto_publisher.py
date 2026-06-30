@@ -262,6 +262,24 @@ class AutoPublisher:
         except Exception as e:
             self._log_event(f"Qiita投稿エラー: {e}")
 
+    def _load_latest_zenn_article(self) -> str:
+        """最新のZenn記事ファイルを読み込む（_task_resultsが空の場合のフォールバック）"""
+        from pathlib import Path
+        articles_dir = Path(r"C:\Users\admin\zenn-content\articles")
+        if not articles_dir.exists():
+            return ""
+        files = sorted(articles_dir.glob("*.md"), key=lambda f: f.stat().st_mtime, reverse=True)
+        for f in files[:5]:
+            text = f.read_text(encoding="utf-8")
+            # frontmatter を除去して本文だけ返す
+            if text.startswith("---"):
+                end = text.find("---", 3)
+                if end != -1:
+                    text = text[end + 3:].strip()
+            if len(text) > 200:
+                return text
+        return ""
+
     async def _run_reddit_post(self):
         note_task = None
         for tid, t in reversed(list(self._task_results.items())):
@@ -270,15 +288,21 @@ class AutoPublisher:
                 break
 
         if not note_task:
-            self._log_event("Reddit投稿スキップ: 完了済みnote記事なし")
-            return
+            # サーバー再起動後などメモリにない場合はZennファイルからフォールバック
+            fallback_text = self._load_latest_zenn_article()
+            if not fallback_text:
+                self._log_event("Reddit投稿スキップ: 記事なし（メモリ・ディスク両方）")
+                return
+            self._log_event("Reddit: Zennファイルからフォールバック記事を使用")
+            raw_text = fallback_text
+        else:
+            raw_text = note_task["result"]
 
         subreddit = REDDIT_SUBREDDITS[self._reddit_sub_idx % len(REDDIT_SUBREDDITS)]
         self._reddit_sub_idx += 1
         self._log_event(f"Reddit投稿開始: r/{subreddit}")
 
         # Gumroad CTAをテキストに挿入（有料マーカーの直前）
-        raw_text = note_task["result"]
         if self._mem:
             products = self._mem.get_gumroad_products()
             if products:

@@ -67,7 +67,7 @@ class RedditPoster:
         Path(REDDIT_DATA_DIR).mkdir(parents=True, exist_ok=True)
         self._ctx = await pw.chromium.launch_persistent_context(
             REDDIT_DATA_DIR,
-            headless=True,
+            headless=False,
             args=["--disable-blink-features=AutomationControlled"],
         )
         return self._ctx
@@ -82,44 +82,39 @@ class RedditPoster:
         ctx = await self._get_context()
         page = await ctx.new_page()
         try:
-            url = f"https://www.reddit.com/r/{target}/submit?type=self"
+            # old.reddit.com はシンプルな HTML フォームなので自動化しやすい
+            url = f"https://old.reddit.com/r/{target}/submit?selftext=true"
             await page.goto(url, timeout=30000)
-            # networkidle は Reddit では永遠に終わらないことがある → domcontentloaded に変更
             await page.wait_for_load_state("domcontentloaded", timeout=15000)
             await page.wait_for_timeout(2000)
 
             current_url = page.url
-            print(f"[Reddit] ページ読込完了: {current_url}")
+            print(f"[Reddit] ページ読込完了: {current_url}", flush=True)
 
-            # ログインチェック（URLとページ内容の両方を確認）
+            # ログインチェック
             if "login" in current_url or "register" in current_url:
-                print("[Reddit] 未ログイン検出 → reddit_auth.py を実行してください")
+                print("[Reddit] 未ログイン検出 → reddit_auth.py を実行してください", flush=True)
                 return {"status": "error", "error": "未ログイン — python services/reddit_auth.py を実行してください"}
 
-            # タイトル入力
-            title_sel = "textarea[placeholder*='Title'], input[placeholder*='Title'], [data-testid='post-title'] textarea"
-            await page.wait_for_selector(title_sel, timeout=30000)
-            await page.click(title_sel)
-            await page.fill(title_sel, title)
+            # デバッグ: ページHTMLの先頭確認
+            page_text = await page.inner_text("body")
+            print(f"[Reddit] ページ内容（先頭200字）: {page_text[:200]}", flush=True)
+            has_title = await page.query_selector("textarea[name='title']")
+            print(f"[Reddit] タイトルtextarea存在: {bool(has_title)}", flush=True)
+
+            # old.reddit のフォーム: title/text は textarea[name]
+            await page.wait_for_selector("textarea[name='title']", timeout=20000)
+            await page.fill("textarea[name='title']", title)
+            await page.wait_for_timeout(300)
+
+            # 本文（テキスト投稿）
+            text_area = await page.query_selector("textarea[name='text']")
+            if text_area:
+                await text_area.fill(body[:40000])
             await page.wait_for_timeout(500)
 
-            # 本文入力（新Reddit UIはProseMirrorエディタ）
-            body_sel = ".public-DraftEditor-content, .DraftEditor-editorContainer, [contenteditable='true'][data-slate-editor='true'], div[role='textbox']"
-            try:
-                await page.wait_for_selector(body_sel, timeout=8000)
-                await page.click(body_sel)
-                await page.keyboard.type(body[:5000], delay=5)
-            except Exception:
-                # フォールバック: textarea
-                ta = await page.query_selector("textarea[name='text'], textarea[placeholder*='text']")
-                if ta:
-                    await ta.fill(body[:5000])
-
-            await page.wait_for_timeout(1000)
-
-            # 投稿ボタン
-            post_btn = "button[type='submit']:has-text('Post'), button:has-text('Post'), button[data-testid='post-submit-button']"
-            await page.click(post_btn, timeout=10000)
+            # 投稿ボタン（.btn:has-text('SUBMIT') が確実）
+            await page.click("button.btn:has-text('SUBMIT'), button[type='submit']:not([id*='redesign']):not([class*='flair'])", timeout=10000)
             await page.wait_for_timeout(3000)
 
             post_url = page.url
