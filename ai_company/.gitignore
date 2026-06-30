@@ -10,3 +10,5 @@ output/
 *.db
 *.db-shm
 *.db-wal
+publisher_state.json
+openclaw_gateway.log
