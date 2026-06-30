@@ -31,8 +31,8 @@ REDDIT_SUBREDDITS = [
     "artificial",       # AI系
 ]
 
-# 月・水・金
-NOTE_DAYS = {0, 2, 4}
+# 毎日（量産フェーズ: 20〜30本到達まで毎日投稿）
+NOTE_DAYS = {0, 1, 2, 3, 4, 5, 6}
 NOTE_HOUR = 9
 # 火・木
 REDDIT_DAYS = {1, 3}

@@ -804,7 +804,7 @@ function initFiverrBookmarklet() {
     var title=document.title||'Fiverr Order';
     var lower=(req+title).toLowerCase();
     var gig=lower.match(/blog|article|seo|content|write/)? 'seo_blog':lower.match(/proposal|business|pitch|plan/)? 'business_proposal':'market_research';
-    fetch('http://localhost:8001/fiverr/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gig_type:gig,topic:orderId+': '+title.substring(0,60),requirements:req})})
+    fetch('http://localhost:8002/fiverr/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gig_type:gig,topic:orderId+': '+title.substring(0,60),requirements:req})})
     .then(function(r){return r.json();})
     .then(function(d){alert('✅ AI処理開始! タスクID: '+d.task_id+' ダッシュボードで確認してください');})
     .catch(function(e){alert('❌ エラー: '+e.message+' (ダッシュボードが起動しているか確認)');});
@@ -927,11 +927,16 @@ function updateStatus(s) {
   document.getElementById('kpiAvgTime').textContent = s.kpi.avg_processing_sec ?? '-';
 
   const agentList = document.getElementById('agentList');
-  agentList.innerHTML = (s.agents || []).map(a => `
-    <div class="agent-item">
-      <span class="role">${a.role}</span>
+  agentList.innerHTML = (s.agents || []).map(a => {
+    const isClaw = a.role === 'openclaw_operator';
+    const icon = isClaw ? '🤖' : '';
+    const displayRole = isClaw ? 'RPA Operator (OpenClaw)' : a.role;
+    return `
+    <div class="agent-item" ${isClaw ? 'style="border-left: 3px solid #6366f1;"' : ''}>
+      <span class="role">${icon} ${displayRole}</span>
       <span class="queue">キュー: ${a.queue_size} / ${a.model.split('-')[1] || a.model}</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderPlan(plan, taskId) {

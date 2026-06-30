@@ -20,7 +20,7 @@ from rich.text import Text
 from rich.console import Console
 from rich import box
 
-BASE = "http://localhost:8001"
+BASE = "http://localhost:8002"
 console = Console(force_terminal=True, emoji=True)
 
 

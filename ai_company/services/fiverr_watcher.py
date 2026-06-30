@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 POLL_INTERVAL = 300  # 秒（5分）
 PLAYWRIGHT_DATA_DIR = str(Path(__file__).parent.parent / "playwright_data")
-API_BASE = "http://localhost:8001"
+API_BASE = "http://localhost:8002"
 
 # キーワードからギグ種別を自動判定
 GIG_KEYWORDS = {

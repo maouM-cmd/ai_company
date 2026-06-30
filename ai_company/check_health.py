@@ -5,7 +5,7 @@ import json
 import urllib.request
 import urllib.error
 
-BASE = "http://localhost:8001"
+BASE = "http://localhost:8002"
 PASS = "[OK]"
 FAIL = "[NG]"
 
@@ -45,7 +45,7 @@ def run():
     except Exception as e:
         results.append(check("[1] サーバー応答", False, str(e)[:60]))
         print("\nサーバーが起動していません。先に起動してください。")
-        print("コマンド: python main.py --server 8001")
+        print("コマンド: python main.py --server 8002")
         sys.exit(1)
 
     # [2] エージェント起動確認

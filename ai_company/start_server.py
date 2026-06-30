@@ -14,7 +14,7 @@ base   = r"C:\Users\admin\ai_company"
 
 # サーバーをバックグラウンドで起動
 server = subprocess.Popen(
-    [python, "-m", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "8001"],
+    [python, "-m", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "8002"],
     cwd=base,
     stdout=open(rf"{base}\server.log", "a"),
     stderr=open(rf"{base}\server_err.log", "a"),
