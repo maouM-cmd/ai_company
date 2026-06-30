@@ -113,7 +113,20 @@ async def call_llm(
                 await asyncio.sleep(wait)
             elif is_quota:
                 _switch_to_ollama(minutes=10)
-                return await loop.run_in_executor(None, lambda: _ollama_sync(prompt, system))
+                try:
+                    return await loop.run_in_executor(None, lambda: _ollama_sync(prompt, system))
+                except RuntimeError:
+                    # Ollama未起動: Gemini制限が解除されるまで待機して再試行
+                    wait_sec = max(0.0, _ollama_until - _time.time())
+                    if wait_sec > 1:
+                        print(f"[LLM] Ollama未起動 → Gemini制限解除まで{int(wait_sec)}秒待機後に再試行")
+                        await asyncio.sleep(wait_sec)
+                        global _ollama_until
+                        _ollama_until = 0.0
+                        return await loop.run_in_executor(
+                            None, lambda: _gemini_sync(prompt, system, model, max_tok)
+                        )
+                    raise
             else:
                 raise
 
