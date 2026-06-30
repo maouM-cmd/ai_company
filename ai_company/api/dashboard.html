@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI企業 ダッシュボード</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+  header { background: #1e293b; border-bottom: 1px solid #334155; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  header h1 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
+  header .badge { background: #22c55e; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 9999px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 340px 1fr; gap: 24px; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; }
+  .card h2 { font-size: 14px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+  textarea { width: 100%; background: #0f172a; border: 1px solid #475569; border-radius: 8px; color: #e2e8f0; padding: 12px; font-size: 14px; resize: vertical; min-height: 100px; font-family: inherit; }
+  textarea:focus { outline: none; border-color: #6366f1; }
+  button { width: 100%; background: #6366f1; color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; transition: background 0.2s; }
+  button:hover { background: #4f46e5; }
+  button:disabled { background: #475569; cursor: not-allowed; }
+  .plan-mode-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 13px; color: #94a3b8; }
+  .plan-mode-row input[type=checkbox] { width: 16px; height: 16px; accent-color: #6366f1; cursor: pointer; }
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .kpi-box { background: #0f172a; border-radius: 8px; padding: 12px; text-align: center; }
+  .kpi-box .num { font-size: 28px; font-weight: 700; color: #6366f1; }
+  .kpi-box .label { font-size: 11px; color: #64748b; margin-top: 4px; }
+  .agent-list { display: flex; flex-direction: column; gap: 8px; }
+  .agent-item { background: #0f172a; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .agent-item .role { font-weight: 600; color: #a5b4fc; }
+  .agent-item .queue { color: #64748b; font-size: 12px; }
+  .task-list { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; }
+  .history-toggle { font-size: 12px; color: #64748b; cursor: pointer; padding: 6px 0; user-select: none; display: flex; align-items: center; gap: 6px; }
+  .history-toggle:hover { color: #94a3b8; }
+  .history-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; margin-top: 8px; }
+  .task-item { background: #0f172a; border-radius: 8px; padding: 14px; border-left: 3px solid #334155; }
+  .task-item.processing { border-left-color: #f59e0b; }
+  .task-item.planning   { border-left-color: #818cf8; }
+  .task-item.awaiting_approval { border-left-color: #06b6d4; }
+  .task-item.completed  { border-left-color: #22c55e; }
+  .task-item.failed     { border-left-color: #ef4444; }
+  .task-item.rejected   { border-left-color: #6b7280; }
+  .task-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .task-desc { font-size: 13px; color: #e2e8f0; flex: 1; margin-right: 12px; }
+  .status-badge { font-size: 11px; padding: 2px 8px; border-radius: 9999px; white-space: nowrap; }
+  .status-badge.processing       { background: #78350f; color: #fbbf24; }
+  .status-badge.planning         { background: #312e81; color: #a5b4fc; }
+  .status-badge.awaiting_approval{ background: #164e63; color: #67e8f9; }
+  .status-badge.completed        { background: #14532d; color: #4ade80; }
+  .status-badge.failed           { background: #7f1d1d; color: #f87171; }
+  .status-badge.rejected         { background: #1f2937; color: #9ca3af; }
+  .task-meta { font-size: 11px; color: #64748b; }
+  .task-result { font-size: 12px; color: #94a3b8; margin-top: 8px; white-space: pre-wrap; max-height: 150px; overflow-y: auto; border-top: 1px solid #1e293b; padding-top: 8px; }
+  /* プラン表示 */
+  .plan-box { margin-top: 10px; border: 1px solid #164e63; border-radius: 8px; padding: 12px; background: #0c1e2a; }
+  .plan-box h4 { font-size: 12px; color: #67e8f9; margin-bottom: 8px; }
+  .plan-subtask { font-size: 12px; color: #94a3b8; padding: 4px 0; border-bottom: 1px solid #1e3a4a; }
+  .plan-subtask:last-child { border-bottom: none; }
+  .plan-subtask .role-tag { color: #a5b4fc; font-weight: 600; }
+  .plan-concerns { margin-top: 8px; }
+  .plan-concerns li { font-size: 12px; color: #fbbf24; padding: 2px 0; list-style: disc; margin-left: 16px; }
+  .plan-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .btn-approve { flex: 1; background: #16a34a; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; margin-top: 0; }
+  .btn-approve:hover { background: #15803d; }
+  .btn-reject  { flex: 1; background: #dc2626; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; margin-top: 0; }
+  .btn-reject:hover { background: #b91c1c; }
+  /* 提案ボックス */
+  .suggestions-box { margin-top: 8px; border: 1px solid #713f12; border-radius: 8px; padding: 10px; background: #1c1007; }
+  .suggestions-box h4 { font-size: 12px; color: #fbbf24; margin-bottom: 6px; }
+  .suggestions-box li { font-size: 12px; color: #fcd34d; padding: 2px 0; list-style: disc; margin-left: 16px; }
+  /* 承認カード（キーワード） */
+  .approval-item { background: #1c1917; border: 1px solid #78350f; border-radius: 8px; padding: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .approval-btns { display: flex; gap: 8px; }
+  .kw-btn-approve { background: #16a34a; border: none; color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .kw-btn-reject  { background: #dc2626; border: none; color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .msg { font-size: 13px; margin-top: 8px; min-height: 20px; color: #a5b4fc; }
+  .refresh-info { font-size: 11px; color: #475569; margin-top: 8px; text-align: right; }
+  .right-col { display: flex; flex-direction: column; gap: 24px; }
+  /* タスク候補チップ */
+  .chip-label { font-size: 11px; color: #64748b; margin-bottom: 6px; }
+  .chip-wrap { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip { background: #1e3a5f; color: #93c5fd; border: 1px solid #1d4ed8; border-radius: 9999px; padding: 4px 10px; font-size: 12px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+  .chip:hover { background: #1d4ed8; color: #fff; }
+  .chip.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+  /* スケジュール */
+  .schedule-item { background: #0f172a; border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 13px; }
+  .schedule-time { color: #a5b4fc; font-weight: 700; font-size: 12px; min-width: 40px; }
+  .schedule-desc { flex: 1; color: #e2e8f0; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .schedule-btns { display: flex; gap: 4px; }
+  .btn-toggle-on  { background: #16a34a; border: none; color: #fff; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+  .btn-toggle-off { background: #475569; border: none; color: #fff; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+  .btn-del { background: #7f1d1d; border: none; color: #f87171; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+  .sch-input { background: #0f172a; border: 1px solid #475569; border-radius: 6px; color: #e2e8f0; padding: 6px 8px; font-size: 13px; font-family: inherit; }
+  .sch-input:focus { outline: none; border-color: #6366f1; }
+  .btn-export { background: none; border: 1px solid #334155; color: #64748b; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; width: auto; margin-top: 6px; }
+  .btn-export:hover { background: #1e293b; color: #94a3b8; }
+  /* 収益サマリー */
+  .revenue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .rev-box { background: #0f172a; border-radius: 8px; padding: 12px; text-align: center; }
+  .rev-box .r-num { font-size: 20px; font-weight: 700; }
+  .rev-box .r-label { font-size: 11px; color: #64748b; margin-top: 3px; }
+  .r-num.income  { color: #4ade80; }
+  .r-num.expense { color: #f87171; }
+  .r-num.profit  { color: #818cf8; }
+  .r-num.neutral { color: #94a3b8; }
+  /* クライアント */
+  .client-item { background: #0f172a; border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; cursor: pointer; }
+  .client-item:hover { background: #162032; }
+  .client-name { font-size: 13px; color: #e2e8f0; font-weight: 600; }
+  .client-company { font-size: 11px; color: #64748b; }
+  .client-badge { background: #1e3a5f; color: #93c5fd; font-size: 11px; padding: 2px 8px; border-radius: 9999px; }
+  /* プロジェクト */
+  .project-item { background: #0f172a; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .project-header { display: flex; justify-content: space-between; align-items: center; }
+  .project-name { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+  .project-client { font-size: 11px; color: #64748b; }
+  .project-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .project-budget { font-size: 12px; color: #4ade80; }
+  .project-due { font-size: 11px; color: #94a3b8; }
+  .st-active { background: #14532d; color: #4ade80; font-size: 11px; padding: 2px 8px; border-radius: 9999px; }
+  .st-completed { background: #1e293b; color: #64748b; font-size: 11px; padding: 2px 8px; border-radius: 9999px; }
+  .st-paused { background: #78350f; color: #fbbf24; font-size: 11px; padding: 2px 8px; border-radius: 9999px; }
+  .btn-rev-add { background: none; border: 1px solid #22c55e; color: #4ade80; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; width: auto; margin-top: 0; }
+  .btn-rev-add:hover { background: #14532d; }
+  /* 収益登録モーダル */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; width: 360px; max-width: 90vw; }
+  .modal-box h3 { font-size: 15px; margin-bottom: 16px; color: #e2e8f0; }
+  .modal-field { margin-bottom: 12px; }
+  .modal-field label { font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px; }
+  .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+  .btn-save { flex: 1; background: #6366f1; border: none; color: #fff; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-top: 0; }
+  .btn-cancel { flex: 1; background: #334155; border: none; color: #94a3b8; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-top: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI企業 ダッシュボード</h1>
+  <span class="badge" id="statusBadge">起動中...</span>
+</header>
+
+<div class="container">
+  <!-- 左カラム -->
+  <div style="display:flex;flex-direction:column;gap:24px;">
+
+    <!-- Fiverr注文処理 -->
+    <div class="card" style="border:1px solid #1d4ed8;">
+      <h2 style="color:#60a5fa;">⚡ Fiverr注文処理</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:12px;">Fiverrから注文が来たらここに貼り付けるだけ</div>
+      <div style="margin-bottom:8px;">
+        <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">ギグ種別</label>
+        <select id="fiverrGigType" class="sch-input" style="width:100%;">
+          <option value="market_research">📊 AI Market Research Report</option>
+          <option value="seo_blog">✍️ SEO Blog Article</option>
+          <option value="business_proposal">📋 Business Proposal</option>
+        </select>
+      </div>
+      <div style="margin-bottom:8px;">
+        <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">トピック / 業界 <span style="color:#ef4444;">*</span></label>
+        <input id="fiverrTopic" type="text" class="sch-input" style="width:100%;box-sizing:border-box;" placeholder="例: Electric Vehicle Market, Fitness Apps, SaaS for HR">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">クライアントの要件（Fiverrの注文内容をコピペ）</label>
+        <textarea id="fiverrReq" style="width:100%;box-sizing:border-box;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:10px;font-size:13px;height:80px;resize:vertical;" placeholder="例: Focus on Asia-Pacific market, include competitor analysis for Tesla and BYD"></textarea>
+      </div>
+      <button onclick="submitFiverrOrder()" style="background:#1d4ed8;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;width:100%;">🚀 AIに生成させる</button>
+      <div class="msg" id="fiverrMsg"></div>
+    </div>
+
+    <!-- SNSプロモ生成 -->
+    <div class="card" style="border:1px solid #7c3aed;">
+      <h2 style="color:#a78bfa;">📣 SNSプロモ自動生成</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:12px;">商品×プラットフォームを選んでAIが投稿文を生成</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <select id="promoProduct" class="sch-input" style="flex:1;">
+          <option value="seo_pack">📝 SEO Pack ($19)</option>
+          <option value="ai_bundle">📊 AI Bundle ($29)</option>
+          <option value="pitch_deck">🎯 Pitch Deck ($29)</option>
+        </select>
+        <select id="promoPlatform" class="sch-input" style="flex:1;">
+          <option value="twitter">🐦 Twitter/X</option>
+          <option value="reddit">🤖 Reddit</option>
+          <option value="linkedin">💼 LinkedIn</option>
+        </select>
+      </div>
+      <button onclick="generatePromo()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;">✨ 投稿文を生成</button>
+      <div class="msg" id="promoMsg"></div>
+    </div>
+
+    <!-- Fiverr返信生成 -->
+    <div class="card" style="border:1px solid #0369a1;">
+      <h2 style="color:#38bdf8;">💬 Fiverr返信AI生成</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:8px;">バイヤーのメッセージをペーストするだけ</div>
+      <textarea id="buyerMsg" style="width:100%;box-sizing:border-box;background:#1e293b;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:10px;font-size:13px;height:70px;resize:vertical;" placeholder="例: Hi, I need a market research report on the EV market in Japan. Can you do it in 2 days?"></textarea>
+      <button onclick="generateFiverrReply()" style="margin-top:8px;background:#0369a1;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;">🚀 返信文を生成</button>
+      <div class="msg" id="replyMsg"></div>
+    </div>
+
+    <!-- Fiverr ワンクリック注文処理 -->
+    <div class="card" style="border:1px solid #065f46;">
+      <h2 style="color:#34d399;">🔖 Fiverr ワンクリック注文</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:12px;">Fiverr注文ページで下のブックマークをクリックするだけで自動処理開始</div>
+      <div style="background:#0f172a;border-radius:8px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px;">① 下のリンクをブックマークバーにドラッグ</div>
+        <a id="fiverrBookmarklet" href="" style="display:inline-block;background:#065f46;color:#34d399;padding:6px 14px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;cursor:grab;">🚀 Fiverr→AI処理</a>
+        <div style="font-size:11px;color:#94a3b8;margin-top:8px;">② Fiverr注文ページを開いてそのブックマークをクリック</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:2px;">③ 自動で要件取得・AI生成・完了履歴に表示</div>
+      </div>
+      <div id="fiverrOrderList" style="font-size:12px;color:#94a3b8;">処理済み注文なし</div>
+    </div>
+
+    <!-- Gumroad 商品生成 -->
+    <div class="card" style="border:1px solid #b45309;">
+      <h2 style="color:#f59e0b;">🛒 Gumroad商品生成</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:12px;">AIがデジタル商品を自動生成してGumroadに登録します</div>
+      <div id="gumroadStatus" style="font-size:12px;margin-bottom:10px;"></div>
+      <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">商品タイプ</label>
+      <select id="gumroadProductType" style="width:100%;background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:6px;padding:8px;margin-bottom:12px;font-size:13px;">
+        <option value="prompt_pack">📝 ChatGPT副業プロンプト集100選（$19）</option>
+        <option value="template">📊 AI Market Research テンプレート集（$29）</option>
+        <option value="guide">📖 note収益化完全ガイド（$15）</option>
+      </select>
+      <button class="btn" style="background:#b45309;" onclick="createGumroadProduct()">🚀 商品を自動生成＆登録</button>
+      <div id="gumroadProductList" style="margin-top:12px;font-size:12px;color:#94a3b8;">Gumroad既存商品を読み込み中...</div>
+    </div>
+
+    <!-- 自動投稿スケジュール -->
+    <div class="card" style="border:1px solid #4338ca;">
+      <h2 style="color:#818cf8;">🤖 自動投稿スケジュール</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:10px;">サーバー起動中は自動で実行されます</div>
+      <div style="background:#0f172a;border-radius:8px;padding:10px;margin-bottom:10px;font-size:12px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+          <span style="color:#a5b4fc;">📝 note記事投稿</span>
+          <span style="color:#94a3b8;">月・水・金 09:00 自動</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#f87171;">🤖 Reddit投稿</span>
+          <span style="color:#94a3b8;">火・木 10:00 自動</span>
+        </div>
+      </div>
+      <div id="autoLog" style="font-size:11px;color:#64748b;max-height:80px;overflow-y:auto;margin-bottom:10px;">ログ読み込み中...</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="autoNoteNow()" style="flex:1;background:#4338ca;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;">📝 今すぐnote生成→投稿</button>
+        <button onclick="autoRedditNow()" style="flex:1;background:#7f1d1d;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;">🤖 今すぐReddit投稿</button>
+      </div>
+      <div class="msg" id="autoMsg"></div>
+    </div>
+
+    <!-- note.com記事生成 -->
+    <div class="card" style="border:1px solid #b45309;">
+      <h2 style="color:#fbbf24;">📝 note.com 記事生成</h2>
+      <div style="font-size:12px;color:#64748b;margin-bottom:10px;">有料記事（無料プレビュー＋有料本編）を2,000字以上で自動生成</div>
+      <div style="margin-bottom:8px;">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">テンプレート選択</div>
+        <select id="noteTopic" class="sch-input" style="width:100%;" onchange="document.getElementById('noteCustom').value=''">
+          <option value="ai_productivity">🤖 AI・ChatGPT活用術</option>
+          <option value="side_hustle">💰 副業・フリーランス収入</option>
+          <option value="marketing">📣 SNS集客・マーケティング</option>
+          <option value="investing">📈 資産運用・投資入門</option>
+          <option value="programming">💻 プログラミング・IT副業</option>
+        </select>
+      </div>
+      <div style="margin-bottom:8px;">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">カスタムテーマ（任意 — 入力するとテンプレートより優先）</div>
+        <input id="noteCustom" type="text" class="sch-input" style="width:100%;box-sizing:border-box;" placeholder="例: Notionで副業管理を効率化する方法">
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+        <div style="font-size:11px;color:#94a3b8;">有料設定金額:</div>
+        <select id="notePrice" class="sch-input" style="width:120px;">
+          <option value="300">¥300</option>
+          <option value="500" selected>¥500</option>
+          <option value="1000">¥1,000</option>
+        </select>
+      </div>
+      <button onclick="generateNote()" style="background:#b45309;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;">✍️ 記事を生成</button>
+      <div class="msg" id="noteMsg"></div>
+    </div>
+
+    <!-- タスク投入 -->
+    <div class="card">
+      <h2>新規タスク投入</h2>
+      <div class="chip-label">候補から選ぶ</div>
+      <div class="chip-wrap" id="chipWrap">
+        <span class="chip" onclick="selectChip(this, 'AI・テクノロジー市場の最新トレンドを調査し、今後6ヶ月の動向を分析してください')">📊 市場分析</span>
+        <span class="chip" onclick="selectChip(this, 'AIエージェントを活用した業務効率化について、3000字程度のブログ記事を執筆してください')">✍️ ブログ記事</span>
+        <span class="chip" onclick="selectChip(this, 'PythonでCSVファイルを読み込み、集計・グラフ出力するスクリプトを作成してください')">💻 コード生成</span>
+        <span class="chip" onclick="selectChip(this, '主要なAI企業（OpenAI・Google・Anthropic等）の最新製品・戦略を比較調査してください')">🔍 競合調査</span>
+        <span class="chip" onclick="selectChip(this, '当社の強みと弱みを分析し、改善すべきKPI指標と施策を提案してください')">📈 KPIレポート</span>
+        <span class="chip" onclick="selectChip(this, '新規クライアント向けのAIエージェント導入提案書を作成してください。価格・効果・スケジュールを含めること')">📩 提案書作成</span>
+        <span class="chip" onclick="selectChip(this, 'AIエージェント活用支援サービスの見積書を作成してください。初期費用・月額費用・ROIを明示すること')">💰 見積作成</span>
+        <span class="chip" onclick="selectChip(this, '新機能の要件定義書を作成してください。ユーザーストーリー・優先順位・スプリント計画を含めること')">📝 要件定義</span>
+      </div>
+      <textarea id="taskInput" placeholder="例: Pythonでファイル管理CLIを作ってください&#10;例: AI市場の2026年トレンドを分析してください" oninput="document.querySelectorAll('#chipWrap .chip').forEach(c=>c.classList.remove('active'))"></textarea>
+      <div class="plan-mode-row" style="margin-top:8px;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input type="checkbox" id="planModeCheck" checked>
+          <label for="planModeCheck" style="font-size:13px;color:#94a3b8;" title="ONにすると実行前にAIの計画書を確認できます">プランモード ⓘ</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <label style="font-size:12px;color:#64748b;">案件:</label>
+          <select id="taskProjectSel" class="sch-input" style="font-size:12px;padding:4px 6px;">
+            <option value="">なし</option>
+          </select>
+        </div>
+      </div>
+      <button id="submitBtn" onclick="submitTask()">タスクを投入する</button>
+      <div class="msg" id="submitMsg"></div>
+    </div>
+
+    <!-- KPI -->
+    <div class="card">
+      <h2>KPI</h2>
+      <div class="kpi-grid">
+        <div class="kpi-box"><div class="num" id="kpiTotal">-</div><div class="label">総タスク数</div></div>
+        <div class="kpi-box"><div class="num" id="kpiCompleted">-</div><div class="label">完了数</div></div>
+        <div class="kpi-box"><div class="num" id="kpiActive">-</div><div class="label">処理中</div></div>
+        <div class="kpi-box"><div class="num" id="kpiAvgTime">-</div><div class="label">平均処理時間(秒)</div></div>
+      </div>
+      <h2 style="margin-bottom:12px;">エージェント状況</h2>
+      <div class="agent-list" id="agentList">読み込み中...</div>
+      <div class="refresh-info" id="lastRefresh"></div>
+    </div>
+
+    <!-- クライアント管理 -->
+    <div class="card">
+      <h2>クライアント管理</h2>
+      <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+        <input type="text" id="clientName" class="sch-input" style="flex:1;min-width:80px;" placeholder="担当者名">
+        <input type="text" id="clientCompany" class="sch-input" style="flex:1;min-width:80px;" placeholder="会社名">
+        <input type="text" id="clientIndustry" class="sch-input" style="width:80px;" placeholder="業界">
+        <button onclick="addClient()" style="background:#0891b2;border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;width:auto;margin-top:0;">追加</button>
+      </div>
+      <div id="clientList" style="display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;">
+        <div style="color:#475569;font-size:13px;">クライアントなし</div>
+      </div>
+    </div>
+
+    <!-- 定期実行スケジュール -->
+    <div class="card">
+      <h2>定期実行スケジュール</h2>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="time" id="schTime" class="sch-input" style="width:90px;">
+        <input type="text" id="schDesc" class="sch-input" style="flex:1;" placeholder="タスク説明 (例: 市場レポートを作成)">
+        <button onclick="addSchedule()" style="background:#6366f1;border:none;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;">追加</button>
+      </div>
+      <div id="scheduleList"><div style="color:#475569;font-size:13px;">スケジュールなし</div></div>
+    </div>
+
+    <!-- キーワード承認待ち -->
+    <div class="card" id="approvalCard">
+      <h2>キーワード承認待ち</h2>
+      <div id="approvalList"><div style="color:#475569;font-size:13px;">承認待ちタスクなし</div></div>
+    </div>
+
+  </div>
+
+  <!-- 右カラム -->
+  <div class="right-col">
+    <!-- 収益サマリー -->
+    <div class="card">
+      <h2>収益サマリー</h2>
+      <div class="revenue-grid">
+        <div class="rev-box"><div class="r-num income" id="revIncome">¥0</div><div class="r-label">売上合計</div></div>
+        <div class="rev-box"><div class="r-num expense" id="revExpense">¥0</div><div class="r-label">費用合計</div></div>
+        <div class="rev-box"><div class="r-num profit" id="revProfit">¥0</div><div class="r-label">利益</div></div>
+        <div class="rev-box"><div class="r-num neutral" id="revProjects">0</div><div class="r-label">進行中案件 / クライアント</div></div>
+      </div>
+    </div>
+
+    <!-- プロジェクト一覧 -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="margin-bottom:0;">プロジェクト一覧</h2>
+        <button onclick="openNewProject()" style="width:auto;margin-top:0;padding:4px 12px;font-size:12px;background:#0891b2;">+ 新規案件</button>
+      </div>
+      <div id="projectList" style="display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;">
+        <div style="color:#475569;font-size:13px;">プロジェクトなし</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>進行中タスク</h2>
+      <div class="task-list" id="taskListActive"><div style="color:#475569;font-size:13px;">進行中のタスクなし</div></div>
+    </div>
+    <div class="card">
+      <div class="history-toggle" onclick="toggleHistory()">
+        <span id="historyArrow">▶</span>
+        <span>完了履歴 (<span id="historyCount">0</span>件)</span>
+      </div>
+      <div id="historyBox" style="display:none;">
+        <div class="history-list" id="taskListDone"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reddit設定モーダル -->
+<div class="modal-overlay" id="redditSetupModal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box" style="max-width:420px;">
+    <h3 style="color:#f87171;">🤖 Reddit 初期設定</h3>
+    <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;">
+      1. <a href="https://www.reddit.com/prefs/apps" target="_blank" style="color:#60a5fa;">reddit.com/prefs/apps</a> を開く<br>
+      2. "create another app" → <b>script</b> タイプで作成<br>
+      3. client_id（アプリ名下の文字列）とsecretをコピー
+    </p>
+    <div class="modal-field">
+      <label>client_id</label>
+      <input id="rdClientId" type="text" class="sch-input" style="width:100%;box-sizing:border-box;" placeholder="例: aBcDeFgHiJ1234">
+    </div>
+    <div class="modal-field">
+      <label>client_secret</label>
+      <input id="rdSecret" type="password" class="sch-input" style="width:100%;box-sizing:border-box;" placeholder="例: xYzAbCdEfGhIjKlM">
+    </div>
+    <div class="modal-field">
+      <label>Redditユーザー名</label>
+      <input id="rdUser" type="text" class="sch-input" style="width:100%;box-sizing:border-box;" placeholder="例: your_username">
+    </div>
+    <div class="modal-field">
+      <label>Redditパスワード</label>
+      <input id="rdPass" type="password" class="sch-input" style="width:100%;box-sizing:border-box;">
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button onclick="saveRedditConfig()" style="flex:1;background:#dc2626;color:#fff;border:none;border-radius:8px;padding:10px;font-weight:600;cursor:pointer;">💾 保存</button>
+      <button onclick="document.getElementById('redditSetupModal').style.display='none'" style="flex:1;background:#334155;color:#e2e8f0;border:none;border-radius:8px;padding:10px;cursor:pointer;">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<!-- 収益登録モーダル -->
+<div class="modal-overlay" id="revenueModal">
+  <div class="modal-box">
+    <h3>収益・費用の登録</h3>
+    <input type="hidden" id="revProjectId">
+    <div class="modal-field">
+      <label>種別</label>
+      <select id="revType" class="sch-input" style="width:100%;">
+        <option value="income">売上（income）</option>
+        <option value="expense">費用（expense）</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>金額（円）</label>
+      <input type="number" id="revAmount" class="sch-input" style="width:100%;" placeholder="例: 150000">
+    </div>
+    <div class="modal-field">
+      <label>説明</label>
+      <input type="text" id="revDesc" class="sch-input" style="width:100%;" placeholder="例: 〇〇社 システム開発費">
+    </div>
+    <div class="modal-field">
+      <label>日付</label>
+      <input type="date" id="revDate" class="sch-input" style="width:100%;">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="saveRevenue()">登録</button>
+      <button class="btn-cancel" onclick="closeRevenueModal()">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<!-- プロジェクト登録モーダル -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-box">
+    <h3>新規プロジェクト登録</h3>
+    <div class="modal-field">
+      <label>クライアント</label>
+      <select id="projClientSel" class="sch-input" style="width:100%;"><option value="">選択してください</option></select>
+    </div>
+    <div class="modal-field">
+      <label>プロジェクト名</label>
+      <input type="text" id="projName" class="sch-input" style="width:100%;" placeholder="例: ウェブサイトリニューアル">
+    </div>
+    <div class="modal-field">
+      <label>予算（円）</label>
+      <input type="number" id="projBudget" class="sch-input" style="width:100%;" placeholder="例: 500000">
+    </div>
+    <div class="modal-field">
+      <label>納期</label>
+      <input type="date" id="projDue" class="sch-input" style="width:100%;">
+    </div>
+    <div class="modal-field">
+      <label>概要</label>
+      <input type="text" id="projDesc" class="sch-input" style="width:100%;" placeholder="プロジェクトの簡単な説明">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="saveProject()">登録</button>
+      <button class="btn-cancel" onclick="document.getElementById('projectModal').classList.remove('open')">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function selectChip(el, text) {
+  document.querySelectorAll('#chipWrap .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('taskInput').value = text;
+  document.getElementById('taskInput').focus();
+}
+
+async function submitFiverrOrder() {
+  const gigType = document.getElementById('fiverrGigType').value;
+  const topic = document.getElementById('fiverrTopic').value.trim();
+  const requirements = document.getElementById('fiverrReq').value.trim();
+  const msg = document.getElementById('fiverrMsg');
+  if (!topic) { msg.textContent = 'トピックを入力してください'; msg.style.color='#ef4444'; return; }
+
+  msg.textContent = '⏳ AIが生成中... 完了後に下の履歴に表示されます';
+  msg.style.color = '#60a5fa';
+  try {
+    const res = await fetch('/fiverr/order', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({gig_type: gigType, topic, requirements})
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.textContent = `✅ 投入完了 (ID: ${data.task_id}) — 完了後に「📥 MD出力」でダウンロードできます`;
+      msg.style.color = '#4ade80';
+      document.getElementById('fiverrTopic').value = '';
+      document.getElementById('fiverrReq').value = '';
+      refresh();
+    } else {
+      msg.textContent = `エラー: ${data.detail || '不明'}`;
+      msg.style.color = '#ef4444';
+    }
+  } catch(e) {
+    msg.textContent = `通信エラー: ${e.message}`;
+    msg.style.color = '#ef4444';
+  }
+}
+
+async function refreshAutoStatus() {
+  try {
+    const res = await fetch('/auto/status');
+    const data = await res.json();
+    const log = document.getElementById('autoLog');
+    if (data.recent_log && data.recent_log.length > 0) {
+      log.innerHTML = data.recent_log.slice().reverse().map(e =>
+        `<div><span style="color:#475569;">${e.time.substring(11,19)}</span> ${escHtml(e.msg)}</div>`
+      ).join('');
+    } else {
+      log.textContent = '自動投稿ログなし（次回: 月・水・金 09:00）';
+    }
+  } catch(e) {}
+}
+
+async function autoNoteNow() {
+  const msg = document.getElementById('autoMsg');
+  msg.style.color = '#60a5fa';
+  msg.textContent = 'note記事生成→投稿を開始中（2〜3分かかります）...';
+  try {
+    const res = await fetch('/auto/note/now', {method: 'POST'});
+    const data = await res.json();
+    msg.style.color = '#34d399';
+    msg.textContent = `✅ ${data.message}`;
+    setTimeout(refreshAutoStatus, 5000);
+    refresh();
+  } catch(e) { msg.style.color='#ef4444'; msg.textContent='通信エラー'; }
+}
+
+async function autoRedditNow() {
+  const msg = document.getElementById('autoMsg');
+  msg.style.color = '#60a5fa';
+  msg.textContent = 'Reddit投稿を開始中...';
+  try {
+    const res = await fetch('/auto/reddit/now', {method: 'POST'});
+    const data = await res.json();
+    msg.style.color = '#34d399';
+    msg.textContent = `✅ ${data.message}`;
+    setTimeout(refreshAutoStatus, 5000);
+  } catch(e) { msg.style.color='#ef4444'; msg.textContent='通信エラー'; }
+}
+
+async function generateNote() {
+  const topic_key = document.getElementById('noteTopic').value;
+  const custom_topic = document.getElementById('noteCustom').value.trim();
+  const price_yen = parseInt(document.getElementById('notePrice').value);
+  const msg = document.getElementById('noteMsg');
+  msg.style.color = '#60a5fa';
+  msg.textContent = '生成中（草稿→批評→改稿で3ステップ、2〜3分かかります）...';
+  try {
+    const res = await fetch('/note/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({topic_key, custom_topic, price_yen})
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.style.color = '#34d399';
+      msg.textContent = `✅ 記事生成開始 (ID: ${data.task_id}) — 完了履歴で結果を確認・コピーしてnoteに貼り付け`;
+      refresh();
+    } else {
+      msg.style.color = '#ef4444';
+      msg.textContent = `エラー: ${data.detail}`;
+    }
+  } catch(e) { console.error('[note]', e); msg.style.color='#ef4444'; msg.textContent='通信エラー'; }
+}
+
+async function generatePromo() {
+  const product = document.getElementById('promoProduct').value;
+  const platform = document.getElementById('promoPlatform').value;
+  const msg = document.getElementById('promoMsg');
+  msg.style.color = '#60a5fa';
+  msg.textContent = '生成中...（完了履歴タブに表示されます）';
+  try {
+    const res = await fetch('/promo/generate', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({product, platform})
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.style.color = '#34d399';
+      msg.textContent = `✅ 生成開始 (ID: ${data.task_id}) — 完了履歴で確認`;
+      refresh();
+    } else {
+      msg.style.color = '#ef4444';
+      msg.textContent = `エラー: ${data.detail}`;
+    }
+  } catch(e) { console.error('[promo]', e); msg.style.color='#ef4444'; msg.textContent='通信エラー'; }
+}
+
+async function generateFiverrReply() {
+  const buyerMsg = document.getElementById('buyerMsg').value.trim();
+  const msg = document.getElementById('replyMsg');
+  if (!buyerMsg) { msg.style.color='#ef4444'; msg.textContent='メッセージを入力してください'; return; }
+  msg.style.color = '#60a5fa';
+  msg.textContent = '生成中...';
+  try {
+    const res = await fetch('/fiverr/reply', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({buyer_message: buyerMsg})
+    });
+    const data = await res.json();
+    if (res.ok) {
+      msg.style.color = '#34d399';
+      msg.textContent = `✅ 返信文生成中 (ID: ${data.task_id}) — 完了履歴で確認`;
+      refresh();
+    } else {
+      msg.style.color = '#ef4444';
+      msg.textContent = `エラー: ${data.detail}`;
+    }
+  } catch(e) { console.error('[reply]', e); msg.style.color='#ef4444'; msg.textContent='通信エラー'; }
+}
+
+async function retryTask(description) {
+  if (!description) return;
+  try {
+    const res = await fetch('/tasks', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({description, plan_mode: false})
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert(`🔄 再実行を開始しました (ID: ${data.task_id})`);
+      refresh();
+    }
+  } catch(e) { alert('通信エラー: ' + e.message); }
+}
+
+async function postToNote(taskId, btn) {
+  const price = parseInt(document.getElementById('notePrice')?.value || '500');
+  btn.disabled = true;
+  btn.textContent = '投稿中...';
+  try {
+    const res = await fetch('/note/post', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({task_id: taskId, price_yen: price})
+    });
+    const data = await res.json();
+    if (data.status === 'published') {
+      btn.textContent = '✅ 投稿済み';
+      btn.style.background = '#14532d';
+      alert(`📝 note.comに投稿しました！\nURL: ${data.url}`);
+    } else {
+      btn.textContent = '❌ 失敗';
+      btn.disabled = false;
+      alert(`投稿エラー: ${data.error}\n\nnote_auth.py でログインしてあるか確認してください`);
+    }
+  } catch(e) { btn.textContent = '❌ 通信エラー'; btn.disabled = false; }
+}
+
+async function postToReddit(taskId, btn) {
+  const subreddit = prompt('投稿先サブレディット名を入力してください（例: Entrepreneur）\n※ r/ は不要', 'Entrepreneur');
+  if (!subreddit) return;
+  btn.disabled = true;
+  btn.textContent = '投稿中...';
+  try {
+    const res = await fetch('/reddit/post', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({task_id: taskId, subreddit})
+    });
+    const data = await res.json();
+    if (data.status === 'posted') {
+      btn.textContent = '✅ 投稿済み';
+      btn.style.background = '#7f1d1d';
+      alert(`🤖 r/${subreddit} に投稿しました！\nURL: ${data.url}`);
+    } else if (res.status === 400 && data.detail && data.detail.includes('未ログイン')) {
+      btn.textContent = '⚙️ ログイン必要';
+      btn.disabled = false;
+      alert('Redditにログインが必要です。\nターミナルで以下を実行してください:\n\nC:\\Users\\admin\\.gemini\\antigravity\\scratch\\pokemon_ai_battle\\venv\\Scripts\\python.exe C:\\Users\\admin\\ai_company\\services\\reddit_auth.py');
+    } else {
+      btn.textContent = '❌ 失敗';
+      btn.disabled = false;
+      alert(`投稿エラー: ${data.error || data.detail}`);
+    }
+  } catch(e) { btn.textContent = '❌ 通信エラー'; btn.disabled = false; }
+}
+
+async function saveRedditConfig() {
+  const cfg = {
+    client_id: document.getElementById('rdClientId').value.trim(),
+    client_secret: document.getElementById('rdSecret').value.trim(),
+    username: document.getElementById('rdUser').value.trim(),
+    password: document.getElementById('rdPass').value.trim(),
+  };
+  if (!cfg.client_id || !cfg.client_secret || !cfg.username || !cfg.password) {
+    alert('すべての項目を入力してください');
+    return;
+  }
+  const res = await fetch('/reddit/config', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(cfg)
+  });
+  if (res.ok) {
+    alert('✅ Reddit設定を保存しました！');
+    document.getElementById('redditSetupModal').style.display = 'none';
+  }
+}
+
+function showRedditSetup() {
+  document.getElementById('redditSetupModal').style.display = 'flex';
+}
+
+async function createGumroadProduct() {
+  const productType = document.getElementById('gumroadProductType').value;
+  const statusEl = document.getElementById('gumroadStatus');
+
+  // トークン確認
+  const cfgRes = await fetch('/gumroad/config/status');
+  const cfg = await cfgRes.json();
+  if (!cfg.configured) {
+    statusEl.innerHTML = '<span style="color:#ef4444;">❌ GUMROAD_TOKEN が未設定です。<br>.env に GUMROAD_TOKEN=xxxx を追加してサーバーを再起動してください。</span>';
+    return;
+  }
+
+  statusEl.innerHTML = '<span style="color:#60a5fa;">🚀 商品生成中... （3〜5分かかります）</span>';
+  try {
+    const res = await fetch('/gumroad/product/create', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({product_type: productType})
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      statusEl.innerHTML = `<span style="color:#ef4444;">❌ ${data.detail || 'エラー'}</span>`;
+      return;
+    }
+    statusEl.innerHTML = `<span style="color:#34d399;">⏳ 生成開始 (ID: ${data.task_id}) — 完了履歴に表示されます</span>`;
+    refresh();
+    // 完了後に商品リスト更新
+    setTimeout(refreshGumroadProducts, 60000);
+  } catch(e) {
+    statusEl.innerHTML = `<span style="color:#ef4444;">❌ 通信エラー: ${e.message}</span>`;
+  }
+}
+
+async function refreshGumroadProducts() {
+  const el = document.getElementById('gumroadProductList');
+  if (!el) return;
+  try {
+    const res = await fetch('/gumroad/products');
+    const data = await res.json();
+    if (data.error || !data.products?.length) {
+      el.textContent = data.error ? `未設定: ${data.error}` : 'Gumroad商品なし（まだ生成していません）';
+      return;
+    }
+    el.innerHTML = data.products.map(p =>
+      `<div style="margin-bottom:6px;padding:6px;background:#0f172a;border-radius:4px;">
+        <span style="color:#f59e0b;font-weight:600;">${escHtml(p.name)}</span>
+        <span style="color:#94a3b8;margin-left:8px;">$${(p.price/100).toFixed(0)}</span>
+        <a href="${escHtml(p.short_url||'#')}" target="_blank" style="color:#60a5fa;margin-left:8px;font-size:11px;">🔗 Gumroad</a>
+      </div>`
+    ).join('');
+  } catch(e) {
+    el.textContent = '読み込みエラー';
+  }
+}
+
+function initFiverrBookmarklet() {
+  // ブックマークレット: Fiverr注文ページで要件を取得してAPIに送信
+  const code = `(function(){
+    var req='';
+    var selectors=['.requirements-text','[data-testid="order-requirements"]','.order-message-body','.bubble-content','.message-body'];
+    for(var i=0;i<selectors.length;i++){var el=document.querySelector(selectors[i]);if(el&&el.innerText.trim()){req=el.innerText.trim().substring(0,2000);break;}}
+    if(!req){req=document.querySelector('body').innerText.substring(0,500);}
+    var m=location.pathname.match(/\\/orders\\/([A-Z0-9]+)/i);
+    var orderId=m?m[1]:'UNKNOWN_'+Date.now();
+    var title=document.title||'Fiverr Order';
+    var lower=(req+title).toLowerCase();
+    var gig=lower.match(/blog|article|seo|content|write/)? 'seo_blog':lower.match(/proposal|business|pitch|plan/)? 'business_proposal':'market_research';
+    fetch('http://localhost:8001/fiverr/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gig_type:gig,topic:orderId+': '+title.substring(0,60),requirements:req})})
+    .then(function(r){return r.json();})
+    .then(function(d){alert('✅ AI処理開始! タスクID: '+d.task_id+' ダッシュボードで確認してください');})
+    .catch(function(e){alert('❌ エラー: '+e.message+' (ダッシュボードが起動しているか確認)');});
+  })();`;
+  const el = document.getElementById('fiverrBookmarklet');
+  if (el) el.href = 'javascript:' + encodeURIComponent(code);
+}
+
+async function refreshFiverrWatch() {
+  try {
+    const res = await fetch('/fiverr/watch/status');
+    const data = await res.json();
+    const badge = document.getElementById('fiverrWatchBadge');
+    if (data.running) {
+      badge.textContent = '🟢 監視中';
+      badge.style.color = '#34d399';
+    } else {
+      badge.textContent = '🔴 停止中';
+      badge.style.color = '#f87171';
+    }
+    const list = document.getElementById('fiverrOrderList');
+    if (data.recent_orders && data.recent_orders.length > 0) {
+      const statusLabel = {detected:'検知', generating:'生成中', delivered:'配信済み', failed:'失敗', generated:'生成済み'};
+      const statusColor = {detected:'#fbbf24', generating:'#60a5fa', delivered:'#34d399', failed:'#f87171', generated:'#a78bfa'};
+      list.innerHTML = data.recent_orders.slice(0,5).map(o => {
+        const st = o.status || 'detected';
+        return `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1e293b;">
+          <span style="color:#e2e8f0;">${o.order_id}</span>
+          <span style="color:${statusColor[st]||'#94a3b8'};">${statusLabel[st]||st}</span>
+        </div>`;
+      }).join('');
+    } else {
+      list.textContent = '注文なし';
+    }
+  } catch(e) { console.error('[Fiverr watch]', e); }
+}
+
+async function fiverrWatchStart() {
+  await fetch('/fiverr/watch/start', {method:'POST'});
+  refreshFiverrWatch();
+}
+
+async function fiverrWatchStop() {
+  await fetch('/fiverr/watch/stop', {method:'POST'});
+  refreshFiverrWatch();
+}
+
+async function submitTask() {
+  const input = document.getElementById('taskInput');
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('submitMsg');
+  const planMode = document.getElementById('planModeCheck').checked;
+  const desc = input.value.trim();
+  if (!desc) { msg.textContent = 'タスクを入力してください'; return; }
+
+  btn.disabled = true;
+  msg.textContent = planMode ? '計画書を生成中...' : '投入中...';
+  try {
+    const res = await fetch('/tasks', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({description: desc, plan_mode: planMode,
+             project_id: parseInt(document.getElementById('taskProjectSel').value) || null})
+    });
+    const data = await res.json();
+    if (res.ok) {
+      const statusMsg = planMode
+        ? `✓ 計画書を生成中 (ID: ${data.task_id}) — 右欄で承認してください`
+        : `✓ タスク投入完了 (ID: ${data.task_id})`;
+      msg.textContent = statusMsg;
+      input.value = '';
+      document.querySelectorAll('#chipWrap .chip').forEach(c => c.classList.remove('active'));
+      refresh();
+    } else {
+      msg.textContent = `エラー: ${data.detail || '不明なエラー'}`;
+    }
+  } catch(e) {
+    msg.textContent = `通信エラー: ${e.message}`;
+  }
+  btn.disabled = false;
+}
+
+async function refresh() {
+  try {
+    const [statusRes, tasksRes, pendingRes] = await Promise.all([
+      fetch('/status'), fetch('/tasks'), fetch('/pending')
+    ]);
+    const status = await statusRes.json();
+    const tasks = await tasksRes.json();
+    const pending = await pendingRes.json();
+
+    updateStatus(status);
+    updateTasks(tasks);
+    updateApprovals(pending);
+    document.getElementById('lastRefresh').textContent =
+      '最終更新: ' + new Date().toLocaleTimeString('ja-JP');
+  } catch(e) {
+    document.getElementById('statusBadge').textContent = 'オフライン';
+    document.getElementById('statusBadge').style.background = '#ef4444';
+  }
+}
+
+function updateStatus(s) {
+  const badge = document.getElementById('statusBadge');
+  const waiting = s.awaiting_approval || 0;
+  if (s.active_tasks > 0) {
+    badge.textContent = `稼働中 (${s.active_tasks}件処理中)`;
+    badge.style.background = '#f59e0b';
+  } else if (waiting > 0) {
+    badge.textContent = `承認待ち (${waiting}件)`;
+    badge.style.background = '#06b6d4';
+  } else {
+    badge.textContent = '待機中';
+    badge.style.background = '#22c55e';
+  }
+
+  document.getElementById('kpiTotal').textContent = s.kpi.total_tasks ?? '-';
+  document.getElementById('kpiCompleted').textContent = s.kpi.completed_tasks ?? '-';
+  document.getElementById('kpiActive').textContent = s.active_tasks ?? '0';
+  document.getElementById('kpiAvgTime').textContent = s.kpi.avg_processing_sec ?? '-';
+
+  const agentList = document.getElementById('agentList');
+  agentList.innerHTML = (s.agents || []).map(a => `
+    <div class="agent-item">
+      <span class="role">${a.role}</span>
+      <span class="queue">キュー: ${a.queue_size} / ${a.model.split('-')[1] || a.model}</span>
+    </div>`).join('');
+}
+
+function renderPlan(plan, taskId) {
+  if (!plan) return '';
+  const subtasks = (plan.subtasks || []).map(s =>
+    `<div class="plan-subtask"><span class="role-tag">[${s.role}]</span> ${escHtml(s.instruction || '')}</div>`
+  ).join('');
+  const concerns = (plan.concerns || []).concat(plan.questions || []);
+  const concernsHtml = concerns.length
+    ? `<div class="plan-concerns"><ul>${concerns.map(c => `<li>${escHtml(c)}</li>`).join('')}</ul></div>` : '';
+  return `
+    <div class="plan-box">
+      <h4>📋 AIが作成した実行計画</h4>
+      ${subtasks}
+      ${concernsHtml}
+      <div class="plan-actions">
+        <button class="btn-approve" onclick="approvePlan('${taskId}')">✓ 承認して実行</button>
+        <button class="btn-reject"  onclick="rejectPlan('${taskId}')">✕ 却下</button>
+      </div>
+    </div>`;
+}
+
+function renderSuggestions(suggestions) {
+  if (!suggestions || !suggestions.length) return '';
+  return `
+    <div class="suggestions-box">
+      <h4>💡 AIからの提案</h4>
+      <ul>${suggestions.map(s => `<li>${escHtml(s)}</li>`).join('')}</ul>
+    </div>`;
+}
+
+const ACTIVE_STATUSES = new Set(['processing', 'planning', 'awaiting_approval']);
+const DONE_STATUSES   = new Set(['completed', 'failed', 'rejected']);
+
+function renderTaskCard(t) {
+  const st = t.status || 'processing';
+  const resultHtml = t.result
+    ? `<div class="task-result">${escHtml(String(t.result))}</div>` : '';
+  const planHtml = (st === 'awaiting_approval' && t.plan) ? renderPlan(t.plan, t.task_id) : '';
+  const suggestHtml = DONE_STATUSES.has(st) ? renderSuggestions(t.suggestions) : '';
+  const exportBtn = (st === 'completed' && t.task_id)
+    ? `<button class="btn-export" onclick="window.open('/tasks/${t.task_id}/export')">📥 MD出力</button>` : '';
+
+  // note.com / Reddit 投稿ボタン（完了タスクのみ）
+  const isNote = st === 'completed' && t.description && t.description.startsWith('[note]');
+  const isPromo = st === 'completed' && t.description && t.description.startsWith('[プロモ]');
+  const noteBtn = isNote
+    ? `<button class="btn-export" style="background:#92400e;border-color:#b45309;" onclick="postToNote('${t.task_id}', this)">📝 noteに投稿</button>` : '';
+  const redditBtn = (isNote || isPromo) && st === 'completed'
+    ? `<button class="btn-export" style="background:#7f1d1d;border-color:#dc2626;" onclick="postToReddit('${t.task_id}', this)">🤖 Redditに投稿</button>` : '';
+  const retryBtn = st === 'failed' && t.description && !t.description.startsWith('[note自動]')
+    ? `<button class="btn-export" style="background:#1e3a5f;border-color:#3b82f6;color:#93c5fd;" onclick="retryTask('${escHtml(t.description || '')}')">🔄 再実行</button>` : '';
+
+  return `
+    <div class="task-item ${st}">
+      <div class="task-header">
+        <div class="task-desc">${escHtml(t.description || t.instruction || '')}</div>
+        <span class="status-badge ${st}">${stLabel(st)}</span>
+      </div>
+      <div class="task-meta">ID: ${t.task_id} | ${fmtTime(t.submitted_at || t.created_at)}</div>
+      ${planHtml}
+      ${resultHtml}
+      ${suggestHtml}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+        ${exportBtn}${noteBtn}${redditBtn}${retryBtn}
+      </div>
+    </div>`;
+}
+
+function updateTasks(data) {
+  const all = [...(data.recent || [])].sort((a,b) => b.submitted_at > a.submitted_at ? 1 : -1);
+  const active = all.filter(t => ACTIVE_STATUSES.has(t.status));
+  const done   = all.filter(t => DONE_STATUSES.has(t.status));
+
+  const activeEl = document.getElementById('taskListActive');
+  activeEl.innerHTML = active.length
+    ? active.map(renderTaskCard).join('')
+    : '<div style="color:#475569;font-size:13px;">進行中のタスクなし</div>';
+
+  const doneEl = document.getElementById('taskListDone');
+  doneEl.innerHTML = done.slice(0, 30).map(renderTaskCard).join('');
+  document.getElementById('historyCount').textContent = done.length;
+}
+
+function toggleHistory() {
+  const box = document.getElementById('historyBox');
+  const arrow = document.getElementById('historyArrow');
+  const open = box.style.display === 'none';
+  box.style.display = open ? 'block' : 'none';
+  arrow.textContent = open ? '▼' : '▶';
+}
+
+function updateApprovals(data) {
+  const list = document.getElementById('approvalList');
+  const items = data.pending || [];
+  if (!items.length) {
+    list.innerHTML = '<div style="color:#475569;font-size:13px;">承認待ちタスクなし</div>';
+    return;
+  }
+  list.innerHTML = items.map(p => `
+    <div class="approval-item">
+      <div style="font-size:13px;flex:1;">${escHtml(p.task)}</div>
+      <div class="approval-btns">
+        <button class="kw-btn-approve" onclick="doApprove('${p.approval_id}')">承認</button>
+        <button class="kw-btn-reject"  onclick="doReject('${p.approval_id}')">却下</button>
+      </div>
+    </div>`).join('');
+}
+
+async function approvePlan(taskId) {
+  const btns = document.querySelectorAll(`button[onclick="approvePlan('${taskId}')"], button[onclick="rejectPlan('${taskId}')"]`);
+  btns.forEach(b => b.disabled = true);
+  await fetch(`/tasks/${taskId}/approve`, {method:'POST'});
+  refresh();
+}
+async function rejectPlan(taskId) {
+  const btns = document.querySelectorAll(`button[onclick="approvePlan('${taskId}')"], button[onclick="rejectPlan('${taskId}')"]`);
+  btns.forEach(b => b.disabled = true);
+  await fetch(`/tasks/${taskId}/reject`, {method:'POST'});
+  refresh();
+}
+async function doApprove(id) {
+  const btns = document.querySelectorAll(`button[onclick="doApprove('${id}')"], button[onclick="doReject('${id}')"]`);
+  btns.forEach(b => b.disabled = true);
+  await fetch(`/approve/${id}`, {method:'POST'});
+  refresh();
+}
+async function doReject(id) {
+  const btns = document.querySelectorAll(`button[onclick="doApprove('${id}')"], button[onclick="doReject('${id}')"]`);
+  btns.forEach(b => b.disabled = true);
+  await fetch(`/reject/${id}`, {method:'POST'});
+  refresh();
+}
+
+function stLabel(st) {
+  return {
+    processing:        '処理中',
+    planning:          '計画生成中',
+    awaiting_approval: '承認待ち',
+    completed:         '完了',
+    failed:            '失敗',
+    rejected:          '却下済み',
+  }[st] || st;
+}
+function fmtTime(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString('ja-JP');
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── スケジュール ───────────────────────────────────────────
+
+async function addSchedule() {
+  const time = document.getElementById('schTime').value;
+  const desc = document.getElementById('schDesc').value.trim();
+  if (!time || !desc) { alert('時刻とタスク説明を入力してください'); return; }
+  await fetch('/schedules', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({time_hhmm: time, description: desc})
+  });
+  document.getElementById('schDesc').value = '';
+  refreshSchedules();
+}
+
+async function toggleSchedule(id, enabled) {
+  await fetch(`/schedules/${id}?enabled=${enabled}`, {method: 'PATCH'});
+  refreshSchedules();
+}
+
+async function deleteSchedule(id) {
+  await fetch(`/schedules/${id}`, {method: 'DELETE'});
+  refreshSchedules();
+}
+
+async function refreshSchedules() {
+  try {
+    const res = await fetch('/schedules');
+    const data = await res.json();
+    const el = document.getElementById('scheduleList');
+    const items = data.schedules || [];
+    if (!items.length) {
+      el.innerHTML = '<div style="color:#475569;font-size:13px;">スケジュールなし</div>';
+      return;
+    }
+    el.innerHTML = items.map(s => `
+      <div class="schedule-item">
+        <span class="schedule-time">${s.time_hhmm}</span>
+        <span class="schedule-desc" title="${escHtml(s.description)}">${escHtml(s.description)}</span>
+        <div class="schedule-btns">
+          ${s.enabled
+            ? `<button class="btn-toggle-on"  onclick="toggleSchedule(${s.id}, false)">ON</button>`
+            : `<button class="btn-toggle-off" onclick="toggleSchedule(${s.id}, true)">OFF</button>`}
+          <button class="btn-del" onclick="deleteSchedule(${s.id})">削除</button>
+        </div>
+      </div>`).join('');
+  } catch(e) { console.error('[schedules]', e); }
+}
+
+// ─── クライアント管理 ────────────────────────────────────────
+
+let _clients = [];
+
+async function addClient() {
+  const name = document.getElementById('clientName').value.trim();
+  const company = document.getElementById('clientCompany').value.trim();
+  const industry = document.getElementById('clientIndustry').value.trim();
+  if (!name) { alert('担当者名を入力してください'); return; }
+  await fetch('/clients', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name, company, industry})
+  });
+  document.getElementById('clientName').value = '';
+  document.getElementById('clientCompany').value = '';
+  document.getElementById('clientIndustry').value = '';
+  refreshBusiness();
+}
+
+function renderClients(clients) {
+  _clients = clients;
+  const el = document.getElementById('clientList');
+  if (!clients.length) {
+    el.innerHTML = '<div style="color:#475569;font-size:13px;">クライアントなし</div>';
+  } else {
+    el.innerHTML = clients.map(c => `
+      <div class="client-item">
+        <div>
+          <div class="client-name">${escHtml(c.name)} ${c.company ? `<span style="font-weight:400;color:#94a3b8;">/ ${escHtml(c.company)}</span>` : ''}</div>
+          ${c.industry ? `<div class="client-company">${escHtml(c.industry)}</div>` : ''}
+        </div>
+        <span class="client-badge">${c.project_count || 0}案件</span>
+      </div>`).join('');
+  }
+  // タスク投入のプロジェクトセレクト用に _projects を更新
+  updateProjectSelects();
+}
+
+// ─── プロジェクト管理 ────────────────────────────────────────
+
+let _projects = [];
+
+function openNewProject() {
+  const sel = document.getElementById('projClientSel');
+  sel.innerHTML = '<option value="">選択してください</option>' +
+    _clients.map(c => `<option value="${c.id}">${escHtml(c.company || c.name)}</option>`).join('');
+  document.getElementById('projName').value = '';
+  document.getElementById('projBudget').value = '';
+  document.getElementById('projDue').value = '';
+  document.getElementById('projDesc').value = '';
+  document.getElementById('projectModal').classList.add('open');
+}
+
+async function saveProject() {
+  const client_id = parseInt(document.getElementById('projClientSel').value);
+  const name = document.getElementById('projName').value.trim();
+  if (!client_id || !name) { alert('クライアントとプロジェクト名は必須です'); return; }
+  await fetch('/projects', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      client_id,
+      name,
+      budget_jpy: parseInt(document.getElementById('projBudget').value) || 0,
+      due_date: document.getElementById('projDue').value,
+      description: document.getElementById('projDesc').value,
+    })
+  });
+  document.getElementById('projectModal').classList.remove('open');
+  refreshBusiness();
+}
+
+async function updateProjectStatusUI(id, status) {
+  await fetch(`/projects/${id}/status?status=${status}`, {method: 'PATCH'});
+  refreshBusiness();
+}
+
+function renderProjects(projects) {
+  _projects = projects;
+  const el = document.getElementById('projectList');
+  if (!projects.length) {
+    el.innerHTML = '<div style="color:#475569;font-size:13px;">プロジェクトなし</div>';
+  } else {
+    el.innerHTML = projects.map(p => {
+      const stClass = p.status === 'active' ? 'st-active' : p.status === 'completed' ? 'st-completed' : 'st-paused';
+      const stLabel = p.status === 'active' ? '進行中' : p.status === 'completed' ? '完了' : '一時停止';
+      return `
+      <div class="project-item">
+        <div class="project-header">
+          <div>
+            <div class="project-name">${escHtml(p.name)}</div>
+            <div class="project-client">${escHtml(p.client_company || p.client_name || '')}</div>
+          </div>
+          <span class="${stClass}">${stLabel}</span>
+        </div>
+        <div class="project-meta">
+          ${p.budget_jpy ? `<span class="project-budget">¥${p.budget_jpy.toLocaleString()}</span>` : ''}
+          ${p.due_date ? `<span class="project-due">期限: ${p.due_date}</span>` : ''}
+          <button class="btn-rev-add" onclick="openRevenueModal(${p.id})">+収益登録</button>
+          ${p.status === 'active'
+            ? `<button class="btn-del" onclick="updateProjectStatusUI(${p.id},'completed')" style="margin-top:0;">完了</button>`
+            : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+  updateProjectSelects();
+}
+
+function updateProjectSelects() {
+  const sel = document.getElementById('taskProjectSel');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">なし</option>' +
+    _projects.filter(p => p.status === 'active')
+      .map(p => `<option value="${p.id}">${escHtml(p.name)}</option>`).join('');
+  if (cur) sel.value = cur;
+}
+
+// ─── 収益管理 ─────────────────────────────────────────────────
+
+function openRevenueModal(projectId) {
+  document.getElementById('revProjectId').value = projectId;
+  document.getElementById('revType').value = 'income';
+  document.getElementById('revAmount').value = '';
+  document.getElementById('revDesc').value = '';
+  document.getElementById('revDate').value = new Date().toISOString().slice(0,10);
+  document.getElementById('revenueModal').classList.add('open');
+}
+
+function closeRevenueModal() {
+  document.getElementById('revenueModal').classList.remove('open');
+}
+
+async function saveRevenue() {
+  const project_id = parseInt(document.getElementById('revProjectId').value) || null;
+  const type = document.getElementById('revType').value;
+  const amount_jpy = parseInt(document.getElementById('revAmount').value);
+  const description = document.getElementById('revDesc').value.trim();
+  const date = document.getElementById('revDate').value;
+  if (!amount_jpy || amount_jpy <= 0) { alert('金額を入力してください'); return; }
+  if (!date) { alert('日付を入力してください'); return; }
+  await fetch('/revenue', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({project_id, type, amount_jpy, description, date})
+  });
+  closeRevenueModal();
+  refreshRevenue();
+}
+
+async function refreshRevenue() {
+  try {
+    const res = await fetch('/revenue/summary');
+    const s = await res.json();
+    const fmt = n => '¥' + (n || 0).toLocaleString();
+    document.getElementById('revIncome').textContent  = fmt(s.total_income);
+    document.getElementById('revExpense').textContent = fmt(s.total_expense);
+    document.getElementById('revProfit').textContent  = fmt(s.profit);
+    document.getElementById('revProjects').textContent =
+      `${s.active_projects}件 / ${s.total_clients}社`;
+  } catch(e) { console.error('[revenue]', e); }
+}
+
+async function refreshBusiness() {
+  try {
+    const [cRes, pRes] = await Promise.all([fetch('/clients'), fetch('/projects')]);
+    const cData = await cRes.json();
+    const pData = await pRes.json();
+    renderClients(cData.clients || []);
+    renderProjects(pData.projects || []);
+    refreshRevenue();
+  } catch(e) { console.error('[business]', e); }
+}
+
+// 初回ロード + 自動更新
+refresh();
+refreshSchedules();
+refreshBusiness();
+refreshFiverrWatch();
+refreshAutoStatus();
+refreshGumroadProducts();
+initFiverrBookmarklet();
+setInterval(refresh, 5000);
+setInterval(refreshSchedules, 15000);
+setInterval(refreshBusiness, 10000);
+setInterval(refreshFiverrWatch, 30000);
+setInterval(refreshAutoStatus, 20000);
+setInterval(refreshGumroadProducts, 60000);
+</script>
+</body>
+</html>
