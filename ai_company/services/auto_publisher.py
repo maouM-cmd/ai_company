@@ -8,12 +8,28 @@
 - 毎月15日  10:00 → Gumroad新商品を自動生成・登録
 """
 import asyncio
+import json
 import random
 from datetime import datetime
 from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# トピックインデックスをファイルに永続化（サーバー再起動後も継続）
+_STATE_FILE = Path(__file__).parent.parent / "publisher_state.json"
+
+def _load_state() -> dict:
+    try:
+        return json.loads(_STATE_FILE.read_text())
+    except Exception:
+        return {}
+
+def _save_state(state: dict):
+    try:
+        _STATE_FILE.write_text(json.dumps(state))
+    except Exception:
+        pass
 
 NOTE_TOPICS = [
     "ai_productivity",
@@ -59,8 +75,9 @@ class AutoPublisher:
         self._mem = memory
         self._task: asyncio.Task | None = None
         self._running = False
-        self._note_topic_idx = 0
-        self._reddit_sub_idx = 0
+        _st = _load_state()
+        self._note_topic_idx = _st.get("note_topic_idx", 0)
+        self._reddit_sub_idx = _st.get("reddit_sub_idx", 0)
         self._qiita_last_post_date: str = ""  # YYYY-Www 形式（週番号）
         self._log: list[dict] = []
 
@@ -145,6 +162,7 @@ class AutoPublisher:
     async def _run_note_post(self):
         topic = NOTE_TOPICS[self._note_topic_idx % len(NOTE_TOPICS)]
         self._note_topic_idx += 1
+        _save_state({"note_topic_idx": self._note_topic_idx, "reddit_sub_idx": self._reddit_sub_idx})
         self._log_event(f"note記事生成開始: {topic}")
 
         import uuid
