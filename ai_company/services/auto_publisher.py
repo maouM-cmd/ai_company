@@ -158,9 +158,13 @@ class AutoPublisher:
             "programming": "プログラミング・IT副業",
         }
         from api.app import NOTE_TEMPLATES
+        from agents.research_agent import get_trending_context
         t = NOTE_TEMPLATES[topic]
         theme = t["theme"]
-        prompt = self._build_note_prompt(theme, 500)
+        trend_context = get_trending_context(topic)
+        if trend_context:
+            self._log_event(f"[Research] トレンド取得: {len(trend_context)}字")
+        prompt = self._build_note_prompt(theme, 500, trend_context=trend_context)
 
         self._task_results[task_id] = {
             "task_id": task_id,
@@ -509,7 +513,7 @@ class AutoPublisher:
         await _run_gumroad_product(task_id, product_type)
         self._log_event(f"月次新商品生成完了: {self._task_results[task_id]['status']}")
 
-    def _build_note_prompt(self, theme: str, price_yen: int) -> str:
+    def _build_note_prompt(self, theme: str, price_yen: int, trend_context: str = "") -> str:
         # Gumroad CTA（商品がある場合のみ）
         cta_block = ""
         if self._mem:
@@ -529,12 +533,15 @@ class AutoPublisher:
 ---
 """
 
+        trend_block = f"\n{trend_context}\n" if trend_context else ""
+
         return f"""あなたは副業・AI活用分野のnote.com公認クリエイターです。
 以下の指示に100%従い、読者を「読んで良かった。続きを買いたい」と思わせる有料記事を書いてください。
 
 テーマ: {theme}
 想定読者: 副業・AI活用に挑戦中だが成果が出ていない20〜40代の会社員
 記事価格: {price_yen}円
+{trend_block}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 【タイトル】
