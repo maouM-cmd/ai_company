@@ -171,30 +171,41 @@ class AutoPublisher:
         }
         self._persist(task_id)
 
-        try:
-            async with asyncio.timeout(480):  # 8分（Geminiリトライ90s + Ollama最大300s）
-                raw_text = await call_llm(
-                    prompt,
-                    system="あなたは日本語でnote.com向けの高品質な有料記事を書くプロのライターです。",
-                    tier="worker",
-                )
-        except Exception as e:
-            self._task_results[task_id].update({
-                "status": "failed", "result": f"エラー: {e}",
-                "completed_at": dt.now().isoformat(),
-            })
-            self._persist(task_id)
-            self._log_event(f"記事生成失敗: {e}")
-            return
+        from agents.qa_agent import score_article, build_regeneration_prompt
 
-        if not raw_text:
-            self._task_results[task_id].update({
-                "status": "failed", "result": "空のレスポンス",
-                "completed_at": dt.now().isoformat(),
-            })
-            self._persist(task_id)
-            self._log_event("記事生成失敗: 空のレスポンス")
-            return
+        raw_text = None
+        current_prompt = prompt
+        for attempt in range(3):  # 最大3回（初回 + 再生成2回）
+            try:
+                async with asyncio.timeout(480):
+                    raw_text = await call_llm(
+                        current_prompt,
+                        system="あなたは日本語でnote.com向けの高品質な有料記事を書くプロのライターです。",
+                        tier="worker",
+                    )
+            except Exception as e:
+                self._task_results[task_id].update({
+                    "status": "failed", "result": f"エラー: {e}",
+                    "completed_at": dt.now().isoformat(),
+                })
+                self._persist(task_id)
+                self._log_event(f"記事生成失敗: {e}")
+                return
+
+            if not raw_text:
+                self._log_event("記事生成失敗: 空のレスポンス")
+                return
+
+            # QA採点
+            qa = await score_article(raw_text)
+            self._log_event(f"QA採点: {qa['score']}/10 {'✅' if qa['pass'] else '→ 再生成'}")
+            if qa["pass"]:
+                break
+            if attempt < 2:
+                current_prompt = build_regeneration_prompt(prompt, qa["feedback"])
+        else:
+            # 3回とも不合格でも最後の生成物で続行
+            self._log_event("QA: 3回不合格 → 最後の生成物で続行")
 
         self._task_results[task_id].update({
             "status": "completed", "result": raw_text,

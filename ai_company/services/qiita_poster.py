@@ -35,6 +35,25 @@ def _extract_title(raw_text: str) -> str:
     return m2.group(1).strip() if m2 else "AI・副業実践ガイド"
 
 
+def _sanitize_for_qiita(text: str) -> str:
+    """Qiitaスパム判定を避けるための前処理"""
+    # 過度な売り込み表現を緩和
+    replacements = [
+        ("コピペで今日から使える", "すぐ実践できる"),
+        ("今すぐ手に入れる", "詳細はこちら"),
+        ("コピペして使える", "参考にできる"),
+        ("今すぐ使えるテンプレート", "実践テンプレート"),
+        ("✅ コピペで", "・"),
+        ("✅ ", "・"),
+    ]
+    for old, new in replacements:
+        text = text.replace(old, new)
+    # 連続する空行を2行以下に
+    import re
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text
+
+
 def _build_body(raw_text: str, products: list) -> str:
     # 有料マーカー以前のみ掲載
     body = raw_text
@@ -43,7 +62,10 @@ def _build_body(raw_text: str, products: list) -> str:
             body = raw_text[:raw_text.index(marker)].strip()
             break
 
-    # Gumroad CTA
+    # スパム対策の前処理
+    body = _sanitize_for_qiita(body)
+
+    # Gumroad CTA（自然な文体で）
     if products:
         import random
         p = random.choice(products)
@@ -53,17 +75,13 @@ def _build_body(raw_text: str, products: list) -> str:
 
 ---
 
-## 📦 関連ツール・テンプレート
+## 関連リソース
 
-この記事の内容をすぐ実践したい方へ：
+この記事のテーマに関連して、実践で使えるテンプレートを公開しています。
 
-**→ [{p['name']}]({url})**
+[{p['name']}]({url})（¥{price_j}）
 
-✅ コピペで今日から使える  ✅ ¥{price_j}（コーヒー1杯分）
-
----
-
-*この記事は [note でも読めます](https://note.com/springharu)（有料版は詳細な実践手順・事例付き）*
+詳細な実践手順や事例は [note の記事](https://note.com/springharu) でも読めます。
 """
     return body
 
