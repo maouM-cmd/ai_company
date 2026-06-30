@@ -31,10 +31,15 @@ def is_using_ollama() -> bool:
     return _time.time() < _ollama_until or not GEMINI_API_KEY
 
 
-def _switch_to_ollama(minutes: int = 10):
+def _switch_to_ollama(minutes: int = 3):
     global _ollama_until
     _ollama_until = _time.time() + minutes * 60
     print(f"[LLM] ⚡ Geminiクォータ超過 → Ollama ({OLLAMA_MODEL}) に{minutes}分フォールバック")
+
+
+def _reset_ollama_fallback():
+    global _ollama_until
+    _ollama_until = 0.0
 
 
 # ── Gemini 呼び出し ─────────────────────────────────────────
@@ -112,7 +117,7 @@ async def call_llm(
                 print(f"[LLM] Geminiレート制限 → {wait}秒後リトライ ({attempt+1}/2)")
                 await asyncio.sleep(wait)
             elif is_quota:
-                _switch_to_ollama(minutes=10)
+                _switch_to_ollama(minutes=3)
                 try:
                     return await loop.run_in_executor(None, lambda: _ollama_sync(prompt, system))
                 except RuntimeError:
@@ -121,8 +126,7 @@ async def call_llm(
                     if wait_sec > 1:
                         print(f"[LLM] Ollama未起動 → Gemini制限解除まで{int(wait_sec)}秒待機後に再試行")
                         await asyncio.sleep(wait_sec)
-                        global _ollama_until
-                        _ollama_until = 0.0
+                        _reset_ollama_fallback()
                         return await loop.run_in_executor(
                             None, lambda: _gemini_sync(prompt, system, model, max_tok)
                         )
